@@ -8,6 +8,8 @@ import {
 import type { LinksFunction } from "@remix-run/node";
 
 import "./tailwind.css";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -31,8 +33,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body>
+      <body className="dark">
+        <Navbar />
         {children}
+        <Footer />
         <ScrollRestoration />
         <Scripts />
       </body>
