@@ -1,5 +1,7 @@
 import { Button } from "~/components/ui/button";
 import { Layers, Github } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { Link } from "@remix-run/react";
 
 export default function Navbar() {
   return (
@@ -37,6 +39,17 @@ export default function Navbar() {
           </Button>
           <Button variant="secondary">Sign In</Button>
           <Button>Get Started</Button>
+          <Link to="/dashboard">
+            <Avatar className="w-12 h-12">
+              <AvatarImage
+                src={
+                  "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&q=80"
+                }
+                alt={"test"}
+              />
+              <AvatarFallback>{"test"}</AvatarFallback>
+            </Avatar>
+          </Link>
         </div>
       </div>
     </header>
