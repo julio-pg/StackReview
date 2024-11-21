@@ -1,6 +1,7 @@
 import { Button } from "~/components/ui/button";
-import { Plus } from "lucide-react";
+import { Github, Plus, Twitter } from "lucide-react";
 import { StackCreator } from "./StackCreator";
+import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 
 const userStacks = [
   {
@@ -56,6 +57,27 @@ const userStacks = [
 export default function UserStacks() {
   return (
     <div className=" bg-background px-4 py-8 mx-auto">
+      <h1 className="text-4xl font-bold mb-2">Profile</h1>
+      <div className="flex items-center gap-4 mb-8">
+        <Avatar className="w-32 h-32">
+          <AvatarImage
+            src={
+              "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&q=80"
+            }
+            alt={"test"}
+          />
+          <AvatarFallback>{"test"}</AvatarFallback>
+        </Avatar>
+        <div>
+          <p className="text-2xl font-bold">Edgar Oganesyan</p>
+          <p className="text-muted-foreground flex items-center gap-2">
+            <Github className="w-4 h-4" /> @Techsource
+          </p>
+          <p className="text-muted-foreground flex items-center gap-2">
+            <Twitter className="w-4 h-4" /> @Techsource
+          </p>
+        </div>
+      </div>
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-4xl font-bold">Your Stacks</h1>
