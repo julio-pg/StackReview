@@ -4,6 +4,8 @@ export interface Creator {
   avatar: string;
   expertise: string;
   bio: string;
+  github: string;
+  twitter: string;
 }
 
 export interface Stack {
@@ -14,4 +16,13 @@ export interface Stack {
   // reviews: number;
   tags: string[];
   creator: Creator;
+  technologies: Technology[];
+  updatedAt: string;
+}
+export interface Technology {
+  name: string;
+  version: string;
+  description: string;
+  category: string;
+  website: string;
 }

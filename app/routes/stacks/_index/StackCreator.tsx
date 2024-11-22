@@ -12,7 +12,7 @@ interface StackCreatorProps {
 
 export function StackCreator({ stack }: StackCreatorProps) {
   return (
-    <Link to={`/stacks/${stack.id}`}>
+    <Link to={`/stacks/${stack.creator.username}/${stack.id}`}>
       <Card className="overflow-hidden cursor-pointer">
         <div className="p-6 space-y-6">
           {/* Stack Info */}
