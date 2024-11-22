@@ -68,7 +68,7 @@ export default function UserStacks() {
           />
           <AvatarFallback>{"test"}</AvatarFallback>
         </Avatar>
-        <div>
+        <div className="flex flex-col gap-2">
           <p className="text-2xl font-bold">Edgar Oganesyan</p>
           <p className="text-muted-foreground flex items-center gap-2">
             <Github className="w-4 h-4" /> @Techsource
@@ -76,6 +76,7 @@ export default function UserStacks() {
           <p className="text-muted-foreground flex items-center gap-2">
             <Twitter className="w-4 h-4" /> @Techsource
           </p>
+          <Button variant="outline">Edit Profile</Button>
         </div>
       </div>
       <div className="flex justify-between items-center mb-8">

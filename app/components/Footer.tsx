@@ -1,23 +1,15 @@
 import { Layers } from "lucide-react";
-
+import { Link } from "@remix-run/react";
 const footerLinks = {
   product: [
-    { name: "Features", href: "#" },
-    { name: "Pricing", href: "#" },
-    { name: "Compare", href: "#" },
-    { name: "Updates", href: "#" },
+    { name: "About", href: "#" },
+    { name: "Contact", href: "#" },
   ],
   categories: [
-    { name: "Documentation", href: "#" },
-    { name: "Guides", href: "#" },
-    { name: "Help", href: "#" },
-    { name: "API Reference", href: "#" },
-  ],
-  company: [
-    { name: "About", href: "#" },
-    { name: "Blog", href: "#" },
-    { name: "Careers", href: "#" },
-    { name: "Contact", href: "#" },
+    { name: "Programming", href: "#" },
+    { name: "Design", href: "#" },
+    { name: "Marketing", href: "#" },
+    { name: "Business", href: "#" },
   ],
   legal: [
     { name: "Privacy", href: "#" },
@@ -42,51 +34,10 @@ export default function Footer() {
               choices.
             </p>
           </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Product</h3>
-            <ul className="space-y-3">
-              {footerLinks.product.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Categories</h3>
-            <ul className="space-y-3">
-              {footerLinks.categories.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Company</h3>
-            <ul className="space-y-3">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <a
-                    href={link.href}
-                    className="text-muted-foreground hover:text-primary transition-colors"
-                  >
-                    {link.name}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <FooterLink title="Product" links={footerLinks.product} />
+          <FooterLink title="Categories" links={footerLinks.categories} />
+          {/* <FooterLink title="Company" links={footerLinks.company} /> */}
+          <FooterLink title="Legal" links={footerLinks.legal} />
         </div>
         <div className="mt-16 border-t border-border/40 pt-8 flex flex-col md:flex-row justify-between items-center">
           <p className="text-muted-foreground">
@@ -107,5 +58,31 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+
+function FooterLink({
+  title,
+  links,
+}: {
+  title: string;
+  links: { name: string; href: string }[];
+}) {
+  return (
+    <div>
+      <h3 className="text-lg font-semibold mb-4">{title}</h3>
+      <ul className="space-y-3">
+        {links.map((link) => (
+          <li key={link.name}>
+            <Link
+              to={link.href}
+              className="text-muted-foreground hover:text-primary transition-colors"
+            >
+              {link.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
