@@ -2,6 +2,7 @@ import { Button } from "~/components/ui/button";
 import { Github, Plus, Twitter } from "lucide-react";
 import { StackCreator } from "./StackCreator";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
+import { useUserStore } from "~/store/userStore";
 
 const userStacks = [
   {
@@ -55,27 +56,27 @@ const userStacks = [
 ];
 
 export default function UserStacks() {
+  const { user } = useUserStore();
   return (
     <div className=" bg-background px-4 py-8 mx-auto">
       <h1 className="text-4xl font-bold mb-2">Profile</h1>
       <div className="flex items-center gap-4 mb-8">
         <Avatar className="w-32 h-32">
-          <AvatarImage
-            src={
-              "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&q=80"
-            }
-            alt={"test"}
-          />
-          <AvatarFallback>{"test"}</AvatarFallback>
+          <AvatarImage src={user?.avatar} alt={"test"} />
+          <AvatarFallback>{user?.name[0]}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col gap-2">
-          <p className="text-2xl font-bold">Edgar Oganesyan</p>
-          <p className="text-muted-foreground flex items-center gap-2">
-            <Github className="w-4 h-4" /> @Techsource
-          </p>
-          <p className="text-muted-foreground flex items-center gap-2">
-            <Twitter className="w-4 h-4" /> @Techsource
-          </p>
+          <p className="text-2xl font-bold">{user?.name}</p>
+          {user?.github && (
+            <p className="text-muted-foreground flex items-center gap-2">
+              <Github className="w-4 h-4" /> @{user?.github}
+            </p>
+          )}
+          {user?.twitter && (
+            <p className="text-muted-foreground flex items-center gap-2">
+              <Twitter className="w-4 h-4" /> @{user?.twitter}
+            </p>
+          )}
           <Button variant="outline">Edit Profile</Button>
         </div>
       </div>

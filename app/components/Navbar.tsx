@@ -3,9 +3,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Link } from "@remix-run/react";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { useUserStore } from "~/store/userStore";
+import { loginWithGoogle } from "~/services/signin";
+import { useEffect } from "react";
 
 export default function Navbar() {
   const { user } = useUserStore();
+
+  useEffect(() => {
+    loginWithGoogle();
+  }, []);
   return (
     <header className="border-b border-border/40 bg-background/95 backdrop-blur sticky top-0 z-50">
       <div className="flex h-16 items-center px-4">
@@ -38,10 +44,12 @@ export default function Navbar() {
         <div className="ml-auto flex items-center space-x-4">
           {/* <Button>Get Started</Button> */}
           {user ? (
-            <Avatar>
-              <AvatarImage src={user?.avatar} />
-              <AvatarFallback>{user?.name[0]}</AvatarFallback>
-            </Avatar>
+            <Link to="/dashboard">
+              <Avatar>
+                <AvatarImage src={user?.avatar} />
+                <AvatarFallback>{user?.name[0]}</AvatarFallback>
+              </Avatar>
+            </Link>
           ) : (
             <GoogleLoginButton />
           )}

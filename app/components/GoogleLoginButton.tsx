@@ -1,13 +1,19 @@
 import { GoogleLogin } from "@react-oauth/google";
-import { loginWithGoogle } from "~/services/Login";
+import { signInWithGoogle } from "~/services/signin";
 
 export default function GoogleLoginButton() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleLoginSuccess = (response: any) => {
-    console.log("Login Success:", response);
+    // console.log("Login Success:", response);
     // Send token to your server for verification and authentication.
     const token = response.credential;
-    loginWithGoogle(token);
+    signInWithGoogle(token).then(() => {
+      try {
+        sessionStorage.setItem("credential", token);
+      } catch (error) {
+        console.error("Error storing token in session storage:", error);
+      }
+    });
   };
 
   const handleLoginError = () => {

@@ -51,7 +51,6 @@ export function ErrorBoundary() {
   }
 }
 export function Layout({ children }: { children: React.ReactNode }) {
-  // console.log(import.meta.env.VITE_GOOGLE_CLIENT_ID);
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <html lang="en">
