@@ -1,9 +1,11 @@
-import { Button } from "~/components/ui/button";
 import { Layers } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Link } from "@remix-run/react";
+import GoogleLoginButton from "./GoogleLoginButton";
+import { useUserStore } from "~/store/userStore";
 
 export default function Navbar() {
+  const { user } = useUserStore();
   return (
     <header className="border-b border-border/40 bg-background/95 backdrop-blur sticky top-0 z-50">
       <div className="flex h-16 items-center px-4">
@@ -34,19 +36,15 @@ export default function Navbar() {
           </nav>
         </div>
         <div className="ml-auto flex items-center space-x-4">
-          <Button>Sign In</Button>
           {/* <Button>Get Started</Button> */}
-          <Link to="/dashboard">
-            <Avatar className="w-12 h-12">
-              <AvatarImage
-                src={
-                  "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&q=80"
-                }
-                alt={"test"}
-              />
-              <AvatarFallback>{"test"}</AvatarFallback>
+          {user ? (
+            <Avatar>
+              <AvatarImage src={user?.avatar} />
+              <AvatarFallback>{user?.name[0]}</AvatarFallback>
             </Avatar>
-          </Link>
+          ) : (
+            <GoogleLoginButton />
+          )}
         </div>
       </div>
     </header>
