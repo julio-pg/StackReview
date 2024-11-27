@@ -21,8 +21,6 @@ export interface Stack {
 }
 export interface Technology {
   name: string;
-  version: string;
-  description: string;
   category: string;
   website: string;
 }

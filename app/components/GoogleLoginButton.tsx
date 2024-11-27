@@ -9,9 +9,9 @@ export default function GoogleLoginButton() {
     const token = response.credential;
     signInWithGoogle(token).then(() => {
       try {
-        sessionStorage.setItem("credential", token);
+        localStorage.setItem("credential", token);
       } catch (error) {
-        console.error("Error storing token in session storage:", error);
+        console.error("Error storing token in local storage:", error);
       }
     });
   };

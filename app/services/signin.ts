@@ -16,8 +16,7 @@ export const signInWithGoogle = async (token: string) => {
 export const loginWithGoogle = async () => {
   const { setUser } = useUserStore.getState();
   try {
-    const credential = sessionStorage.getItem("credential");
-    console.log("loginXD");
+    const credential = localStorage.getItem("credential");
     if (credential) {
       const response = await AxiosInstance.post("/stacks/login", {
         credential,

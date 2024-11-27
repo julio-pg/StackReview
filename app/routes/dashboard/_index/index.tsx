@@ -1,8 +1,9 @@
 import { Button } from "~/components/ui/button";
-import { Github, Plus, Twitter } from "lucide-react";
+import { Github, Twitter } from "lucide-react";
 import { StackCreator } from "./StackCreator";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useUserStore } from "~/store/userStore";
+import CreateStackModal from "./CreateStackModal";
 
 const userStacks = [
   {
@@ -87,9 +88,7 @@ export default function UserStacks() {
             Manage and create your technology stacks
           </p>
         </div>
-        <Button size="lg" className="gap-2">
-          <Plus className="w-4 h-4" /> Create Stack
-        </Button>
+        <CreateStackModal />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -106,9 +105,7 @@ export default function UserStacks() {
               Create your first stack to share your favorite technology
               combinations with the community.
             </p>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" /> Create Your First Stack
-            </Button>
+            <CreateStackModal />
           </div>
         </div>
       )}
