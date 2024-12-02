@@ -13,11 +13,12 @@ import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
 import { Plus } from "lucide-react";
 import { Technology } from "~/routes/stacks/_index/types";
-import { useState } from "react";
 import { Badge } from "~/components/ui/badge";
+import { Form } from "@remix-run/react";
+import { useCreateStore } from "~/store/createStore/createStore";
 
 export default function CreateStackModal() {
-  const [selectedTechs, setSelectedTechs] = useState<Technology[]>([]);
+  const { selectedTechs, setSelectedTechs } = useCreateStore();
 
   const handleTechSelection = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedTech = frameworks.find(
@@ -27,7 +28,7 @@ export default function CreateStackModal() {
       selectedTech &&
       !selectedTechs.some((tech) => tech.name === selectedTech.name)
     ) {
-      setSelectedTechs((prev) => [...prev, selectedTech]);
+      setSelectedTechs(selectedTech);
     }
   };
 
@@ -45,16 +46,21 @@ export default function CreateStackModal() {
             Share your favorite technology combinations with the community.
           </DialogDescription>
         </DialogHeader>
-        <form className="space-y-4">
+        <Form className="space-y-4" method="post">
           <div className="space-y-2">
             <Label htmlFor="title">Stack Title</Label>
-            <Input id="title" placeholder="e.g. Modern Web Development Stack" />
+            <Input
+              id="title"
+              name="title"
+              placeholder="e.g. Modern Web Development Stack"
+            />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="description">Description</Label>
             <Textarea
               id="description"
+              name="description"
               placeholder="Describe your technology stack and its benefits..."
               rows={5}
               className="resize-none"
@@ -65,6 +71,7 @@ export default function CreateStackModal() {
             <Label htmlFor="categories">Category</Label>
             <select
               id="categories"
+              name="category"
               defaultValue=""
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
@@ -108,7 +115,7 @@ export default function CreateStackModal() {
               Create Stack
             </Button>
           </DialogFooter>
-        </form>
+        </Form>
       </DialogContent>
     </Dialog>
   );

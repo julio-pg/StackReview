@@ -2,8 +2,12 @@ import { Button } from "~/components/ui/button";
 import { Github, Twitter } from "lucide-react";
 import { StackCreator } from "./StackCreator";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { useUserStore } from "~/store/userStore";
+import { useUserStore } from "~/store/userStore/userStore";
 import CreateStackModal from "./CreateStackModal";
+import { createStack } from "~/services/Stacks/Stacks";
+import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import { RequestStack } from "../types";
+import { Technology } from "~/routes/stacks/_index/types";
 
 const userStacks = [
   {
@@ -55,6 +59,30 @@ const userStacks = [
     },
   },
 ];
+
+export const action = async ({ request }: ActionFunctionArgs) => {
+  try {
+    const { user } = useUserStore.getState();
+    const formData = await request.formData();
+
+    const updates: RequestStack = {
+      title: formData.get("title") as string,
+      description: formData.get("description") as string,
+      category: formData.get("category") as string,
+      creatorId: user!.id!,
+      technologies: formData.getAll("technologies") as unknown as Technology[],
+    };
+    await createStack(updates);
+    // return redirect("/dashboard");
+  } catch (error) {
+    console.error("Failed to create stack:", error);
+    return redirect("/dashboard", {
+      headers: {
+        "Set-Cookie": "error=true; HttpOnly; Path=/; SameSite=Strict",
+      },
+    });
+  }
+};
 
 export default function UserStacks() {
   const { user } = useUserStore();

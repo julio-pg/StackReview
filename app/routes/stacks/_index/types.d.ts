@@ -12,9 +12,9 @@ export interface Stack {
   id: string;
   title: string;
   description: string;
-  rating: number;
+  // rating: number;
   // reviews: number;
-  tags: string[];
+  category: string;
   creator: Creator;
   technologies: Technology[];
   updatedAt: string;

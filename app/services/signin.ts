@@ -1,7 +1,8 @@
-import { useUserStore } from "~/store/userStore";
+import { useUserStore } from "~/store/userStore/userStore";
 import AxiosInstance from "./axios";
+import { Creator } from "~/store/userStore/types";
 
-export const signInWithGoogle = async (token: string) => {
+export async function signInWithGoogle(token: string): Promise<Creator> {
   try {
     const response = await AxiosInstance.post("/stacks/signin", {
       credential: token,
@@ -11,7 +12,7 @@ export const signInWithGoogle = async (token: string) => {
     console.error("Error creating user with google:", error);
     throw error;
   }
-};
+}
 
 export const loginWithGoogle = async () => {
   const { setUser } = useUserStore.getState();
