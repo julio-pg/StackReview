@@ -5,20 +5,24 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "~/components/ui/dialog";
 import { Button } from "~/components/ui/button";
 import { Input } from "~/components/ui/input";
 import { Label } from "~/components/ui/label";
 import { Textarea } from "~/components/ui/textarea";
-import { Plus } from "lucide-react";
+
 import { Technology } from "~/routes/stacks/_index/types";
 import { Badge } from "~/components/ui/badge";
-import { Form } from "@remix-run/react";
-import { useCreateStore } from "~/store/createStore/createStore";
+import { Form, useNavigate } from "@remix-run/react";
+import { useUserStore } from "~/store/userStore/userStore";
+import { useState } from "react";
+import { CircleX } from "lucide-react";
 
 export default function CreateStackModal() {
-  const { selectedTechs, setSelectedTechs } = useCreateStore();
+  const { user } = useUserStore();
+  const [selectedTechs, setSelectedTechs] = useState<Technology[]>(
+    [] as Technology[]
+  );
 
   const handleTechSelection = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedTech = frameworks.find(
@@ -28,17 +32,29 @@ export default function CreateStackModal() {
       selectedTech &&
       !selectedTechs.some((tech) => tech.name === selectedTech.name)
     ) {
-      setSelectedTechs(selectedTech);
+      setSelectedTechs((prev) => [...prev, selectedTech]);
+    }
+  };
+
+  const navigate = useNavigate();
+  const handleClose = () => {
+    navigate(`/dashboard?userId=${user?.id}`);
+  };
+  const deleteTech = (techName: string) => {
+    try {
+      setSelectedTechs((prev) => prev.filter((tech) => tech.name !== techName));
+    } catch (error) {
+      console.error("Failed to delete tech from selected techs:", error);
     }
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button size="lg" className="gap-2">
-          <Plus className="w-4 h-4" /> Create Stack
-        </Button>
-      </DialogTrigger>
+    <Dialog
+      open={true}
+      onOpenChange={(open: boolean) => {
+        open ? () => {} : handleClose();
+      }}
+    >
       <DialogContent className="sm:max-w-[700px]">
         <DialogHeader>
           <DialogTitle>Create New Stack</DialogTitle>
@@ -105,7 +121,14 @@ export default function CreateStackModal() {
             <p>Selected Techs:</p>
             <div className="flex flex-wrap gap-2">
               {selectedTechs.map((tech) => (
-                <Badge key={tech.name}>{tech.name}</Badge>
+                <Badge key={tech.name}>
+                  {tech.name}{" "}
+                  <CircleX
+                    className="ml-2 cursor-pointer"
+                    size={15}
+                    onClick={() => deleteTech(tech.name)}
+                  />
+                </Badge>
               ))}
             </div>
           </div>

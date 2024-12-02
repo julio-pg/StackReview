@@ -4,9 +4,7 @@ import { RequestStack } from "~/routes/dashboard/types";
 
 export async function createStack(data: RequestStack): Promise<Stack> {
   try {
-    const response = await AxiosInstance.post<Stack>("/stacks/create", {
-      createStackDto: data,
-    });
+    const response = await AxiosInstance.post<Stack>("/stacks/create", data);
     return response.data;
   } catch (error) {
     console.error("Error fetching stacks:", error);
@@ -29,6 +27,18 @@ export async function getStackById(id: string): Promise<Stack> {
     return response.data;
   } catch (error) {
     console.error("Error fetching stack:", error);
+    throw error;
+  }
+}
+
+export async function getUserStacks(userId: string) {
+  try {
+    const response = await AxiosInstance.get<Stack[]>("/stacks/user-stacks", {
+      params: { userId },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching stacks:", error);
     throw error;
   }
 }

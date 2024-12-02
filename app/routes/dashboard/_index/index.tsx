@@ -1,82 +1,45 @@
 import { Button } from "~/components/ui/button";
-import { Github, Twitter } from "lucide-react";
+import { Github, Plus, Twitter } from "lucide-react";
 import { StackCreator } from "./StackCreator";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useUserStore } from "~/store/userStore/userStore";
-import CreateStackModal from "./CreateStackModal";
-import { createStack } from "~/services/Stacks/Stacks";
-import { ActionFunctionArgs, redirect } from "@remix-run/node";
+import { createStack, getUserStacks } from "~/services/Stacks/Stacks";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  redirect,
+} from "@remix-run/node";
 import { RequestStack } from "../types";
-import { Technology } from "~/routes/stacks/_index/types";
+import { Link, useLoaderData, useSearchParams } from "@remix-run/react";
+import CreateStackModal from "./CreateStackModal";
 
-const userStacks = [
-  {
-    title: "Modern Web Development Stack",
-    description:
-      "A comprehensive stack for building scalable web applications with the latest technologies.",
-    rating: 4.9,
-    reviews: 1234,
-    tags: ["Web Development", "Full Stack", "React", "Node.js"],
-    creator: {
-      name: "Edgar Oganesyan",
-      username: "Techsource",
-      avatar:
-        "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&q=80",
-      expertise: "Tech Expert",
-      bio: "With over 1M followers, and knowledge on every aspect of tech, a better name might be TechCyborg.",
-    },
-  },
-  {
-    title: "Mobile App Development Stack",
-    description:
-      "Complete stack for building cross-platform mobile applications with React Native.",
-    rating: 4.7,
-    reviews: 856,
-    tags: ["Mobile", "React Native", "Cross Platform"],
-    creator: {
-      name: "Edgar Oganesyan",
-      username: "Techsource",
-      avatar:
-        "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&q=80",
-      expertise: "Tech Expert",
-      bio: "With over 1M followers, and knowledge on every aspect of tech, a better name might be TechCyborg.",
-    },
-  },
-  {
-    title: "Data Science Toolkit",
-    description:
-      "Essential tools and libraries for data analysis and machine learning projects.",
-    rating: 4.8,
-    reviews: 723,
-    tags: ["Data Science", "Python", "Machine Learning"],
-    creator: {
-      name: "Edgar Oganesyan",
-      username: "Techsource",
-      avatar:
-        "https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=400&h=400&q=80",
-      expertise: "Tech Expert",
-      bio: "With over 1M followers, and knowledge on every aspect of tech, a better name might be TechCyborg.",
-    },
-  },
-];
+export async function loader({ request }: LoaderFunctionArgs) {
+  const url = new URL(request.url);
+  const userId = url.searchParams.get("userId");
+
+  const userStacks = await getUserStacks(userId!);
+  return { userStacks };
+}
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {
-    const { user } = useUserStore.getState();
     const formData = await request.formData();
+    const userData = JSON.parse(formData.get("creator") as string);
 
     const updates: RequestStack = {
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       category: formData.get("category") as string,
-      creatorId: user!.id!,
-      technologies: formData.getAll("technologies") as unknown as Technology[],
+      creatorId: userData!.id!,
+      technologies: JSON.parse(formData.get("technologies") as string),
     };
     await createStack(updates);
-    // return redirect("/dashboard");
+    return redirect(`/dashboard?userId=${userData!.id!}`);
   } catch (error) {
+    const formData = await request.formData();
+    const userData = JSON.parse(formData.get("creator") as string);
     console.error("Failed to create stack:", error);
-    return redirect("/dashboard", {
+    return redirect(`/dashboard?userId=${userData!.id!}`, {
       headers: {
         "Set-Cookie": "error=true; HttpOnly; Path=/; SameSite=Strict",
       },
@@ -85,7 +48,9 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function UserStacks() {
+  const [searchParams] = useSearchParams();
   const { user } = useUserStore();
+  const { userStacks } = useLoaderData<typeof loader>();
   return (
     <div className=" bg-background px-4 py-8 mx-auto">
       <h1 className="text-4xl font-bold mb-2">Profile</h1>
@@ -116,7 +81,17 @@ export default function UserStacks() {
             Manage and create your technology stacks
           </p>
         </div>
-        <CreateStackModal />
+        <Link
+          to={{
+            pathname: "/dashboard",
+            search: `?userId=${user?.id}&create_stack=true`,
+          }}
+          replace={true}
+        >
+          <Button size="lg" className="gap-2">
+            <Plus className="w-4 h-4" /> Create Stack
+          </Button>
+        </Link>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -133,10 +108,11 @@ export default function UserStacks() {
               Create your first stack to share your favorite technology
               combinations with the community.
             </p>
-            <CreateStackModal />
+            {/* <CreateStackModal /> */}
           </div>
         </div>
       )}
+      {searchParams.get("create_stack") && <CreateStackModal />}
     </div>
   );
 }

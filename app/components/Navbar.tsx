@@ -39,7 +39,12 @@ export default function Navbar() {
         <div className="ml-auto flex items-center space-x-4">
           {/* <Button>Get Started</Button> */}
           {user ? (
-            <Link to="/dashboard">
+            <Link
+              to={{
+                pathname: "/dashboard",
+                search: `?userId=${user.id}`,
+              }}
+            >
               <Avatar>
                 <AvatarImage src={user?.avatar} />
                 <AvatarFallback>{user?.name[0]}</AvatarFallback>

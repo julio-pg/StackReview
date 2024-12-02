@@ -2,24 +2,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
-import { Star, ThumbsUp } from "lucide-react";
-
-interface Creator {
-  name: string;
-  username: string;
-  avatar: string;
-  expertise: string;
-  bio: string;
-}
-
-interface Stack {
-  title: string;
-  description: string;
-  rating: number;
-  reviews: number;
-  tags: string[];
-  creator: Creator;
-}
+import { Star } from "lucide-react";
+import { Stack } from "~/routes/stacks/_index/types";
 
 interface StackCreatorProps {
   stack: Stack;
@@ -35,16 +19,11 @@ export function StackCreator({ stack }: StackCreatorProps) {
             <h3 className="text-2xl font-semibold">{stack.title}</h3>
             <div className="flex items-center gap-1">
               <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
-              <span className="font-medium">{stack.rating}</span>
             </div>
           </div>
           <p className="text-muted-foreground">{stack.description}</p>
-          <div className="flex flex-wrap gap-2">
-            {stack.tags.map((tag) => (
-              <Badge key={tag} variant="secondary">
-                {tag}
-              </Badge>
-            ))}
+          <div className="flex flex-wrap gap-2 uppercase">
+            <Badge variant="secondary">{stack.category}</Badge>
           </div>
         </div>
 
@@ -75,15 +54,12 @@ export function StackCreator({ stack }: StackCreatorProps) {
               <Badge variant="secondary" className="mt-2">
                 {stack.creator.expertise}
               </Badge>
-              <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
-                {stack.creator.bio}
-              </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 mt-4 text-sm text-muted-foreground">
+          {/* <div className="flex items-center gap-2 mt-4 text-sm text-muted-foreground">
             <ThumbsUp className="w-4 h-4" />
             <span>{stack.reviews} reviews</span>
-          </div>
+          </div> */}
         </div>
       </div>
     </Card>
