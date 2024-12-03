@@ -44,7 +44,7 @@ export default function Stacks() {
           </p>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
-          {stacks.map((stack) => (
+          {stacks?.map((stack) => (
             <StackCreator key={stack.title} stack={stack} />
           ))}
         </div>

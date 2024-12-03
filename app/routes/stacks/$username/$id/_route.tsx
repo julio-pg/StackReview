@@ -10,14 +10,15 @@ import {
   Github,
   Heart,
   MessageSquare,
-  Share2,
-  Star,
+  // Share2,
+  // Star,
   // ThumbsUp,
   Twitter,
 } from "lucide-react";
 import type { LoaderFunctionArgs } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import { getStackById } from "~/services/Stacks/Stacks";
+import ShareButton from "~/components/ShareButton";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const stack = await getStackById(params.id!);
@@ -38,19 +39,24 @@ export default function StackDetails() {
       <div className="flex flex-col md:flex-row justify-between items-start gap-6 mb-8">
         <div className="space-y-4 flex-1">
           <div className="flex items-center gap-2">
-            {stack.tags?.map((tag) => (
-              <Badge key={tag} variant="secondary">
-                {tag}
-              </Badge>
-            ))}
+            <Badge variant="secondary">{stack.category}</Badge>
           </div>
           <h1 className="text-4xl font-bold">{stack?.title}</h1>
           <p className="text-xl text-muted-foreground">{stack?.description}</p>
         </div>
         <div className="flex gap-3">
-          <Button variant="outline" size="lg" className="gap-2">
+          {/* <Button
+            variant="outline"
+            size="lg"
+            className="gap-2"
+            onClick={() => {
+              navigator.clipboard.writeText(window.location.href);
+              alert("Link copied to clipboard!");
+            }}
+          >
             <Share2 className="w-4 h-4" /> Share
-          </Button>
+          </Button> */}
+          <ShareButton />
           <Button size="lg" className="gap-2">
             <Heart className="w-4 h-4" /> Save Stack
           </Button>
@@ -63,13 +69,13 @@ export default function StackDetails() {
           {/* Stack Stats */}
           <Card className="p-6">
             <div className="grid grid-cols-3 gap-4 text-center">
-              <div>
+              {/* <div>
                 <div className="flex items-center justify-center gap-1 text-2xl font-bold">
                   <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
                   {stack?.rating}
                 </div>
                 <p className="text-sm text-muted-foreground">Rating</p>
-              </div>
+              </div> */}
               {/* <div>
                 <div className="text-2xl font-bold">{stack.reviews}</div>
                 <p className="text-sm text-muted-foreground">Reviews</p>
@@ -91,12 +97,10 @@ export default function StackDetails() {
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <h3 className="text-xl font-semibold">{tech?.name}</h3>
-                        <Badge variant="outline">{tech?.version}</Badge>
+                        <Badge variant="outline">{tech?.category}</Badge>
                         <Badge>{tech?.category}</Badge>
                       </div>
-                      <p className="text-muted-foreground">
-                        {tech?.description}
-                      </p>
+                      <p className="text-muted-foreground">{tech?.name}</p>
                     </div>
                     <div className="flex gap-2">
                       <Button variant="ghost" size="icon" asChild>
@@ -199,7 +203,9 @@ export default function StackDetails() {
             <div className="space-y-4 text-sm">
               <div className="flex items-center gap-2 text-muted-foreground">
                 <Code2 className="w-4 h-4" />
-                <span>Last updated {stack.updatedAt}</span>
+                <span>
+                  Last updated {new Date(stack.updatedAt).toDateString()}
+                </span>
               </div>
               {/* <div className="flex items-center gap-2 text-muted-foreground">
                 <ThumbsUp className="w-4 h-4" />

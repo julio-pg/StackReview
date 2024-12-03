@@ -17,7 +17,7 @@ export async function getAllStacks(): Promise<Stack[]> {
     return response.data;
   } catch (error) {
     console.error("Error fetching stacks:", error);
-    throw error;
+    return [];
   }
 }
 

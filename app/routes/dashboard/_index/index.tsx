@@ -1,6 +1,5 @@
 import { Button } from "~/components/ui/button";
 import { Github, Plus, Twitter } from "lucide-react";
-import { StackCreator } from "./StackCreator";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useUserStore } from "~/store/userStore/userStore";
 import { createStack, getUserStacks } from "~/services/Stacks/Stacks";
@@ -12,6 +11,7 @@ import {
 import { RequestStack } from "../types";
 import { Link, useLoaderData, useSearchParams } from "@remix-run/react";
 import CreateStackModal from "./CreateStackModal";
+import { StackCreator } from "~/routes/stacks/_index/StackCreator";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);

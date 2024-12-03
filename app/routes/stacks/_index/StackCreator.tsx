@@ -21,16 +21,12 @@ export function StackCreator({ stack }: StackCreatorProps) {
               <h3 className="text-2xl font-semibold">{stack.title}</h3>
               <div className="flex items-center gap-1">
                 <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
-                <span className="font-medium">{stack.rating}</span>
+                {/* <span className="font-medium">{stack.rating}</span> */}
               </div>
             </div>
             <p className="text-muted-foreground">{stack.description}</p>
             <div className="flex flex-wrap gap-2">
-              {stack.tags.map((tag) => (
-                <Badge key={tag} variant="secondary">
-                  {tag}
-                </Badge>
-              ))}
+              <Badge variant="secondary">{stack.category}</Badge>
             </div>
           </div>
 
