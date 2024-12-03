@@ -131,6 +131,16 @@ export default function CreateStackModal() {
                 </Badge>
               ))}
             </div>
+            <Input
+              className="hidden"
+              name="creator"
+              value={JSON.stringify(user!)}
+            />
+            <Input
+              className="hidden"
+              name="technologies"
+              value={JSON.stringify(selectedTechs)}
+            />
           </div>
 
           <DialogFooter>
