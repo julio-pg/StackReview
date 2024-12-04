@@ -4,16 +4,14 @@ import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Separator } from "~/components/ui/separator";
 import {
-  // BookOpen,
   Code2,
   ExternalLink,
-  Github,
-  Heart,
+  // Github,
+  // Heart,
   MessageSquare,
-  // Share2,
-  // Star,
-  // ThumbsUp,
-  Twitter,
+  MessageSquareMore,
+  Star,
+  // Twitter,
 } from "lucide-react";
 import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
 import { Link, redirect, useLoaderData } from "@remix-run/react";
@@ -65,21 +63,10 @@ export default function StackDetails() {
           <p className="text-xl text-muted-foreground">{stack?.description}</p>
         </div>
         <div className="flex gap-3">
-          {/* <Button
-            variant="outline"
-            size="lg"
-            className="gap-2"
-            onClick={() => {
-              navigator.clipboard.writeText(window.location.href);
-              alert("Link copied to clipboard!");
-            }}
-          >
-            <Share2 className="w-4 h-4" /> Share
-          </Button> */}
           <ShareButton />
-          <Button size="lg" className="gap-2">
+          {/* <Button size="lg" className="gap-2">
             <Heart className="w-4 h-4" /> Save Stack
-          </Button>
+          </Button> */}
         </div>
       </div>
 
@@ -88,22 +75,23 @@ export default function StackDetails() {
         <div className="md:col-span-2 space-y-8">
           {/* Stack Stats */}
           <Card className="p-6">
-            <div className="grid grid-cols-3 gap-4 text-center">
-              {/* <div>
+            <div className="grid grid-cols-2 gap-4 text-center">
+              <div>
                 <div className="flex items-center justify-center gap-1 text-2xl font-bold">
                   <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
                   {stack?.rating}
                 </div>
                 <p className="text-sm text-muted-foreground">Rating</p>
-              </div> */}
-              {/* <div>
-                <div className="text-2xl font-bold">{stack.reviews}</div>
-                <p className="text-sm text-muted-foreground">Reviews</p>
               </div>
               <div>
-                <div className="text-2xl font-bold">{stack.likes}</div>
-                <p className="text-sm text-muted-foreground">Likes</p>
-              </div> */}
+                <div className="flex items-center justify-center gap-1 text-2xl font-bold">
+                  <MessageSquareMore className="w-5 h-5" />
+                  <div className="text-2xl font-bold">
+                    {stack.reviews.length}
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">Reviews</p>
+              </div>
             </div>
           </Card>
 
@@ -168,10 +156,6 @@ export default function StackDetails() {
                 </div>
               </div>
 
-              <p className="text-sm text-muted-foreground">
-                {stack?.creator?.bio}
-              </p>
-
               {/* <div className="flex justify-between text-sm">
                 <div>
                   <div className="font-medium">{stack.creator.followers}</div>
@@ -192,7 +176,7 @@ export default function StackDetails() {
 
               <Separator />
 
-              <div className="flex gap-2">
+              {/* <div className="flex gap-2">
                 {stack?.creator?.github && (
                   <Button variant="ghost" size="icon" asChild>
                     <a
@@ -215,7 +199,7 @@ export default function StackDetails() {
                     </a>
                   </Button>
                 )}
-              </div>
+              </div> */}
             </div>
           </Card>
 

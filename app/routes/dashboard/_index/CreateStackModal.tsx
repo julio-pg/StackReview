@@ -47,7 +47,7 @@ export default function CreateStackModal() {
       console.error("Failed to delete tech from selected techs:", error);
     }
   };
-
+  // TODO: add a max length to the title and description of the stack
   return (
     <Dialog
       open={true}

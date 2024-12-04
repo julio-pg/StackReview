@@ -19,7 +19,7 @@ interface ShareButtonProps {
 let isHydrating = true;
 
 export default function ShareButton({
-  variant = "outline",
+  variant = "default",
   size = "lg",
   className,
 }: ShareButtonProps) {

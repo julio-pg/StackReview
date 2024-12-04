@@ -1,16 +1,10 @@
+import { Creator } from "~/store/userStore/types";
 import { Review } from "../$username/$id/types";
 
-export interface Creator {
-  id: string;
-  name: string;
-  username: string;
-  avatar: string;
-  expertise: string;
-  bio: string;
-  github: string;
-  twitter: string;
-}
-
+export type CreatorMini = Pick<
+  Creator,
+  "id" | "avatar" | "name" | "username" | "expertise"
+>;
 export interface Stack {
   id: string;
   title: string;
@@ -18,7 +12,7 @@ export interface Stack {
   rating: number;
   reviews: Review[];
   category: string;
-  creator: Creator;
+  creator: CreatorMini;
   technologies: Technology[];
   updatedAt: string;
 }
