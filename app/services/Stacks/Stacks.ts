@@ -1,6 +1,7 @@
 import { Stack } from "~/routes/stacks/_index/types";
 import AxiosInstance from "../axios";
 import { RequestStack } from "~/routes/dashboard/types";
+import { RequestReview } from "~/routes/stacks/$username/$id/types";
 
 export async function createStack(data: RequestStack): Promise<Stack> {
   try {
@@ -8,6 +9,16 @@ export async function createStack(data: RequestStack): Promise<Stack> {
     return response.data;
   } catch (error) {
     console.error("Error fetching stacks:", error);
+    throw error;
+  }
+}
+
+export async function createReview(data: RequestReview): Promise<Stack> {
+  try {
+    const response = await AxiosInstance.post<Stack>("/stacks/review", data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating review:", error);
     throw error;
   }
 }

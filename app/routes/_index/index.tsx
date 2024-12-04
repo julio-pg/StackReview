@@ -4,6 +4,7 @@ import { Card } from "~/components/ui/card";
 import { Badge } from "~/components/ui/badge";
 import { Star, Code2, Zap, ThumbsUp } from "lucide-react";
 import { Link } from "@remix-run/react";
+import { useUserStore } from "~/store/userStore/userStore";
 
 export const meta: MetaFunction = () => {
   return [
@@ -17,6 +18,7 @@ export const meta: MetaFunction = () => {
 };
 
 export default function App() {
+  const { user } = useUserStore();
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <main className="flex-1">
@@ -98,8 +100,16 @@ export default function App() {
                 Ready to share your perfect tech stack with the world? Join our
                 community and help others make better technology choices.
               </p>
-              <Button size="lg" className="gap-2">
-                Create Your Stack <Zap className="w-4 h-4" />
+              <Button asChild size="lg" className="gap-2">
+                <Link
+                  to={{
+                    pathname: "/dashboard",
+                    search: `?userId=${user?.id}&create_stack=true`,
+                  }}
+                  replace={true}
+                >
+                  Create Your Stack <Zap className="w-4 h-4" />
+                </Link>
               </Button>
             </div>
           </div>

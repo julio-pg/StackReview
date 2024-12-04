@@ -15,10 +15,12 @@ import {
   // ThumbsUp,
   Twitter,
 } from "lucide-react";
-import type { LoaderFunctionArgs } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { getStackById } from "~/services/Stacks/Stacks";
+import type { ActionFunctionArgs, LoaderFunctionArgs } from "@remix-run/node";
+import { Link, redirect, useLoaderData } from "@remix-run/react";
+import { createReview, getStackById } from "~/services/Stacks/Stacks";
 import ShareButton from "~/components/ShareButton";
+import { ReviewSection } from "./ReviewSection";
+import { RequestReview } from "./types";
 
 export async function loader({ params }: LoaderFunctionArgs) {
   const stack = await getStackById(params.id!);
@@ -29,6 +31,24 @@ export async function loader({ params }: LoaderFunctionArgs) {
     });
   }
   return { stack };
+}
+
+export async function action({ request, params }: ActionFunctionArgs) {
+  try {
+    const formData = await request.formData();
+    const newReview: RequestReview = {
+      stackId: params.id!,
+      rate: Number(formData.get("rate") as string),
+      comment: formData.get("comment") as string,
+      creatorId: formData.get("creatorId") as string,
+    };
+    await createReview(newReview);
+
+    return redirect(`/stacks/${params.username!}/${params.id!}`);
+  } catch (error) {
+    console.error("Error crating review:", error);
+    return redirect(`/stacks/${params.username!}/${params.id!}`);
+  }
 }
 
 export default function StackDetails() {
@@ -97,7 +117,7 @@ export default function StackDetails() {
                     <div>
                       <div className="flex items-center gap-2 mb-2">
                         <h3 className="text-xl font-semibold">{tech?.name}</h3>
-                        <Badge variant="outline">{tech?.category}</Badge>
+
                         <Badge>{tech?.category}</Badge>
                       </div>
                       <p className="text-muted-foreground">{tech?.name}</p>
@@ -126,13 +146,15 @@ export default function StackDetails() {
           <Card className="p-6">
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <Avatar className="w-16 h-16">
-                  <AvatarImage
-                    src={stack?.creator?.avatar}
-                    alt={stack?.creator?.name}
-                  />
-                  <AvatarFallback>{stack?.creator?.name[0]}</AvatarFallback>
-                </Avatar>
+                <Link to={`/profile/${stack.creator.id}`}>
+                  <Avatar className="w-16 h-16">
+                    <AvatarImage
+                      src={stack?.creator?.avatar}
+                      alt={stack?.creator?.name}
+                    />
+                    <AvatarFallback>{stack?.creator?.name[0]}</AvatarFallback>
+                  </Avatar>
+                </Link>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-lg font-semibold">
                     {stack?.creator?.name}
@@ -219,6 +241,7 @@ export default function StackDetails() {
           </Card>
         </div>
       </div>
+      <ReviewSection reviews={stack.reviews || []} />
     </div>
   );
 }

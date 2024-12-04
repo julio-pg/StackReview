@@ -1,4 +1,7 @@
+import { Review } from "../$username/$id/types";
+
 export interface Creator {
+  id: string;
   name: string;
   username: string;
   avatar: string;
@@ -12,8 +15,8 @@ export interface Stack {
   id: string;
   title: string;
   description: string;
-  // rating: number;
-  // reviews: number;
+  rating: number;
+  reviews: Review[];
   category: string;
   creator: Creator;
   technologies: Technology[];
