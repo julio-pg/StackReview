@@ -1,10 +1,10 @@
 import type { MetaFunction } from "@remix-run/node";
 import { Button } from "~/components/ui/button";
-import { Card } from "~/components/ui/card";
-import { Badge } from "~/components/ui/badge";
-import { Star, Code2, Zap, ThumbsUp } from "lucide-react";
-import { Link } from "@remix-run/react";
+import { Code2, Zap } from "lucide-react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { useUserStore } from "~/store/userStore/userStore";
+import { getTopRatedStacks } from "~/services/Stacks/Stacks";
+import { StackCreator } from "../stacks/_index/StackCreator";
 
 export const meta: MetaFunction = () => {
   return [
@@ -17,8 +17,14 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+export async function loader() {
+  const popularStacks = await getTopRatedStacks();
+  return { popularStacks };
+}
+
 export default function App() {
   const { user } = useUserStore();
+  const { popularStacks } = useLoaderData<typeof loader>();
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <main className="flex-1">
@@ -59,32 +65,7 @@ export default function App() {
             </div>
             <div className="grid md:grid-cols-3 gap-8">
               {popularStacks.map((stack) => (
-                <Card
-                  key={stack.title}
-                  className="p-6 hover:border-primary/50 transition-colors"
-                >
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-start">
-                      <h3 className="text-2xl font-semibold">{stack.title}</h3>
-                      <div className="flex items-center gap-1">
-                        <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
-                        <span className="font-medium">{stack.rating}</span>
-                      </div>
-                    </div>
-                    <p className="text-muted-foreground">{stack.description}</p>
-                    <div className="flex flex-wrap gap-2">
-                      {stack.tags.map((tag) => (
-                        <Badge key={tag} variant="secondary">
-                          {tag}
-                        </Badge>
-                      ))}
-                    </div>
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                      <ThumbsUp className="w-4 h-4" />
-                      <span>{stack.reviews} reviews</span>
-                    </div>
-                  </div>
-                </Card>
+                <StackCreator key={stack.id} stack={stack} />
               ))}
             </div>
           </div>
@@ -118,30 +99,3 @@ export default function App() {
     </div>
   );
 }
-
-const popularStacks = [
-  {
-    title: "MERN Stack",
-    description:
-      "MongoDB, Express.js, React, and Node.js - Full-stack JavaScript development.",
-    rating: 4.8,
-    reviews: 1234,
-    tags: ["MongoDB", "Express", "React", "Node.js"],
-  },
-  {
-    title: "JAMstack",
-    description:
-      "JavaScript, APIs, and Markup - Modern web development architecture.",
-    rating: 4.7,
-    reviews: 856,
-    tags: ["Next.js", "Netlify", "Headless CMS"],
-  },
-  {
-    title: "T3 Stack",
-    description:
-      "TypeScript, tRPC, and Tailwind - Type-safe full-stack development.",
-    rating: 4.9,
-    reviews: 2156,
-    tags: ["TypeScript", "tRPC", "Tailwind", "Next.js"],
-  },
-];

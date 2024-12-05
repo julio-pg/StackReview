@@ -34,7 +34,9 @@ export async function getAllStacks(): Promise<Stack[]> {
 
 export async function getStackById(id: string): Promise<Stack> {
   try {
-    const response = await AxiosInstance.get<Stack>(`/stacks/${id}`);
+    const response = await AxiosInstance.get<Stack>(
+      `/stacks/single-stack/${id}`
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching stack:", error);
@@ -51,5 +53,15 @@ export async function getUserStacks(userId: string) {
   } catch (error) {
     console.error("Error fetching stacks:", error);
     throw error;
+  }
+}
+
+export async function getTopRatedStacks(): Promise<Stack[]> {
+  try {
+    const response = await AxiosInstance.get<Stack[]>("/stacks/top-rated");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching stacks:", error);
+    return [];
   }
 }

@@ -6,7 +6,6 @@ import { useUserStore } from "~/store/userStore/userStore";
 
 export default function Navbar() {
   const { user } = useUserStore();
-
   return (
     <header className="border-b border-border/40 bg-background/95 backdrop-blur sticky top-0 z-50">
       <div className="flex h-16 items-center px-4">

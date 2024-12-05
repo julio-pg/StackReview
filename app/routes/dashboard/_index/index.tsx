@@ -12,8 +12,10 @@ import { RequestStack } from "../types";
 import { Link, useLoaderData, useSearchParams } from "@remix-run/react";
 import CreateStackModal from "./CreateStackModal";
 import { StackCreator } from "~/routes/stacks/_index/StackCreator";
+import { requireUserSession } from "~/sessions";
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  await requireUserSession(request);
   const url = new URL(request.url);
   const userId = url.searchParams.get("userId");
 
