@@ -3,9 +3,11 @@ import axios from "axios";
 import { signUpWithGoogle } from "~/services/signup";
 import { useUserStore } from "~/store/userStore/userStore";
 import { Button } from "./ui/button";
+import { useToast } from "~/hooks/use-toast";
 
 export default function GoogleSignupButton() {
   const { setUser } = useUserStore();
+  const { toast } = useToast();
   const handleSignupSuccess = (
     response: Omit<CodeResponse, "error" | "error_description" | "error_uri">
   ) => {
@@ -23,6 +25,7 @@ export default function GoogleSignupButton() {
       })
       .catch((error) => {
         console.error("Error storing token in local storage:", error);
+        toast({ title: "Email already used", variant: "destructive" });
       });
   };
 

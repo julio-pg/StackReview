@@ -23,7 +23,7 @@ export default function GoogleLoginButton() {
         });
       })
       .catch((error) => {
-        console.error("Error storing token in local storage:", error);
+        console.error("Error Login with google:", error);
       });
   };
 

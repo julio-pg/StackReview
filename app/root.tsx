@@ -13,6 +13,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Button } from "./components/ui/button";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { Toaster } from "./components/ui/toaster";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -66,6 +67,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <Footer />
           <ScrollRestoration />
           <Scripts />
+          <Toaster />
         </body>
       </html>
     </GoogleOAuthProvider>
