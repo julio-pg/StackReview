@@ -1,19 +1,18 @@
 import { CodeResponse, useGoogleLogin } from "@react-oauth/google";
 import axios from "axios";
-import { useEffect } from "react";
-import { loginWithGoogle } from "~/services/signup";
+import { signUpWithGoogle } from "~/services/signup";
 import { useUserStore } from "~/store/userStore/userStore";
 import { Button } from "./ui/button";
 
-export default function GoogleLoginButton() {
+export default function GoogleSignupButton() {
   const { setUser } = useUserStore();
-  const handleLoginSuccess = (
+  const handleSignupSuccess = (
     response: Omit<CodeResponse, "error" | "error_description" | "error_uri">
   ) => {
     // console.log("Login Success:", response);
     // Send token to your server for verification and authentication.
     const token = response.code!;
-    loginWithGoogle(token)
+    signUpWithGoogle(token)
       .then(async (user) => {
         const userString = JSON.stringify(user);
         localStorage.setItem("loginData", userString);
@@ -27,23 +26,10 @@ export default function GoogleLoginButton() {
       });
   };
 
-  const login = useGoogleLogin({
+  const signUp = useGoogleLogin({
     flow: "auth-code",
-    onSuccess: (response) => handleLoginSuccess(response),
+    onSuccess: (response) => handleSignupSuccess(response),
     onError: (error) => console.log(error),
   });
-
-  useEffect(() => {
-    const loginData = localStorage.getItem("loginData")
-      ? JSON.parse(localStorage.getItem("loginData")!)
-      : null;
-    if (loginData) {
-      setUser(loginData);
-    }
-  }, []);
-  return (
-    <Button onClick={() => login()} variant={"outline"}>
-      Login
-    </Button>
-  );
+  return <Button onClick={() => signUp()}>Sign Up</Button>;
 }
