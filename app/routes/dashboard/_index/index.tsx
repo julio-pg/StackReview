@@ -9,10 +9,16 @@ import {
   redirect,
 } from "@remix-run/node";
 import { RequestStack } from "../types";
-import { Link, useLoaderData, useSearchParams } from "@remix-run/react";
+import {
+  Link,
+  useActionData,
+  useLoaderData,
+  useSearchParams,
+} from "@remix-run/react";
 import CreateStackModal from "./CreateStackModal";
 import { StackCreator } from "~/routes/stacks/_index/StackCreator";
 import { requireUserSession } from "~/sessions";
+import { z } from "zod";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireUserSession(request);
@@ -35,6 +41,27 @@ export const action = async ({ request }: ActionFunctionArgs) => {
       creatorId: userData!.id!,
       technologies: JSON.parse(formData.get("technologies") as string),
     };
+
+    const stackSchema = z.object({
+      title: z.string().min(1, "Title is required"),
+      description: z.string().min(1, "Description is required"),
+      category: z.string().min(1, "Category is required"),
+      technologies: z
+        .array(
+          z.object({
+            name: z.string(),
+            category: z.string(),
+            website: z.string(),
+          })
+        )
+        .nonempty("At least one technology is required"),
+    });
+
+    const validationResult = stackSchema.safeParse(updates);
+    if (!validationResult.success) {
+      console.error("Validation failed:");
+      return validationResult.error.formErrors.fieldErrors;
+    }
     await createStack(updates);
     return redirect(`/dashboard?userId=${userData!.id!}`);
   } catch (error) {
@@ -53,6 +80,8 @@ export default function UserStacks() {
   const [searchParams] = useSearchParams();
   const { user } = useUserStore();
   const { userStacks } = useLoaderData<typeof loader>();
+  const formErrors = useActionData<typeof action>();
+
   return (
     <div className=" bg-background px-4 py-8 mx-auto">
       <h1 className="text-4xl font-bold mb-2">Profile</h1>
@@ -114,7 +143,9 @@ export default function UserStacks() {
           </div>
         </div>
       )}
-      {searchParams.get("create_stack") && <CreateStackModal />}
+      {searchParams.get("create_stack") && (
+        <CreateStackModal errors={formErrors} />
+      )}
     </div>
   );
 }

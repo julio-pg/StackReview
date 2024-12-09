@@ -18,7 +18,15 @@ import { useUserStore } from "~/store/userStore/userStore";
 import { useState } from "react";
 import { CircleX } from "lucide-react";
 
-export default function CreateStackModal() {
+type Props = {
+  errors?: {
+    title?: string[] | undefined;
+    description?: string[] | undefined;
+    category?: string[] | undefined;
+    technologies?: string[] | undefined;
+  };
+};
+export default function CreateStackModal({ errors }: Props) {
   const { user } = useUserStore();
   const [selectedTechs, setSelectedTechs] = useState<Technology[]>(
     [] as Technology[]
@@ -47,7 +55,7 @@ export default function CreateStackModal() {
       console.error("Failed to delete tech from selected techs:", error);
     }
   };
-  // TODO: add a max length to the title and description of the stack
+
   return (
     <Dialog
       open={true}
@@ -69,7 +77,9 @@ export default function CreateStackModal() {
               id="title"
               name="title"
               placeholder="e.g. Modern Web Development Stack"
+              maxLength={100}
             />
+            <ErrorComponent text={errors?.title?.toString()} />
           </div>
 
           <div className="space-y-2">
@@ -77,10 +87,12 @@ export default function CreateStackModal() {
             <Textarea
               id="description"
               name="description"
+              maxLength={1000}
               placeholder="Describe your technology stack and its benefits..."
               rows={5}
               className="resize-none"
             />
+            <ErrorComponent text={errors?.description?.toString()} />
           </div>
 
           <div className="space-y-2">
@@ -99,6 +111,7 @@ export default function CreateStackModal() {
               <option value="marketing">Marketing</option>
               <option value="business">Business</option>
             </select>
+            <ErrorComponent text={errors?.category?.toString()} />
           </div>
 
           <div className="space-y-2">
@@ -118,6 +131,7 @@ export default function CreateStackModal() {
                 </option>
               ))}
             </select>
+            <ErrorComponent text={errors?.technologies?.toString()} />
             <p>Selected Techs:</p>
             <div className="flex flex-wrap gap-2">
               {selectedTechs.map((tech) => (
@@ -153,6 +167,15 @@ export default function CreateStackModal() {
     </Dialog>
   );
 }
+
+function ErrorComponent({ text }: { text?: string }) {
+  return (
+    <div>
+      <p className="text-red-500">{text}</p>
+    </div>
+  );
+}
+
 const frameworks: Technology[] = [
   {
     name: "React",
