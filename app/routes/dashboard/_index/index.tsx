@@ -2,7 +2,11 @@ import { Button } from "~/components/ui/button";
 import { Github, Plus, Twitter } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useUserStore } from "~/store/userStore/userStore";
-import { createStack, getUserStacks } from "~/services/Stacks/Stacks";
+import {
+  createStack,
+  getAllTechnologies,
+  getUserStacks,
+} from "~/services/Stacks/Stacks";
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
@@ -26,7 +30,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const userId = url.searchParams.get("userId");
 
   const userStacks = await getUserStacks(userId!);
-  return { userStacks };
+  const techs = await getAllTechnologies();
+  return { userStacks, techs };
 }
 
 export const action = async ({ request }: ActionFunctionArgs) => {
@@ -79,7 +84,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function UserStacks() {
   const [searchParams] = useSearchParams();
   const { user } = useUserStore();
-  const { userStacks } = useLoaderData<typeof loader>();
+  const { userStacks, techs } = useLoaderData<typeof loader>();
   const formErrors = useActionData<typeof action>();
 
   return (
@@ -144,7 +149,7 @@ export default function UserStacks() {
         </div>
       )}
       {searchParams.get("create_stack") && (
-        <CreateStackModal errors={formErrors} />
+        <CreateStackModal errors={formErrors} techs={techs} />
       )}
     </div>
   );

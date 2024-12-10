@@ -57,7 +57,7 @@ export function UserNav({ avatar, name, username, id }: Props) {
           >
             <DropdownMenuItem>
               <User className="mr-2 h-4 w-4" />
-              Profile
+              Dashboard
             </DropdownMenuItem>
           </Link>
           {/* <DropdownMenuItem>

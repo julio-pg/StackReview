@@ -19,5 +19,6 @@ export interface Stack {
 export interface Technology {
   name: string;
   category: string;
+  tag: string;
   website: string;
 }

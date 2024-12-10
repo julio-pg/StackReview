@@ -1,4 +1,4 @@
-import { Stack } from "~/routes/stacks/_index/types";
+import { Stack, Technology } from "~/routes/stacks/_index/types";
 import AxiosInstance from "../axios";
 import { RequestStack } from "~/routes/dashboard/types";
 import { RequestReview } from "~/routes/stacks/$username/$id/types";
@@ -63,5 +63,17 @@ export async function getTopRatedStacks(): Promise<Stack[]> {
   } catch (error) {
     console.error("Error fetching stacks:", error);
     return [];
+  }
+}
+
+export async function getAllTechnologies(): Promise<{
+  [x: string]: Technology[];
+}> {
+  try {
+    const response = await AxiosInstance.get("/stacks/all-technologies");
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching technologies:", error);
+    return {};
   }
 }

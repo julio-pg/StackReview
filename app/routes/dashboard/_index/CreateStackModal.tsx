@@ -15,7 +15,7 @@ import { Technology } from "~/routes/stacks/_index/types";
 import { Badge } from "~/components/ui/badge";
 import { Form, useNavigate } from "@remix-run/react";
 import { useUserStore } from "~/store/userStore/userStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CircleX } from "lucide-react";
 
 type Props = {
@@ -25,10 +25,17 @@ type Props = {
     category?: string[] | undefined;
     technologies?: string[] | undefined;
   };
+  techs: { [x: string]: Technology[] };
 };
-export default function CreateStackModal({ errors }: Props) {
+const categories = ["programming", "design", "marketing", "business"];
+
+export default function CreateStackModal({ errors, techs }: Props) {
   const { user } = useUserStore();
   const [selectedTechs, setSelectedTechs] = useState<Technology[]>(
+    [] as Technology[]
+  );
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [frameworks, setFrameworks] = useState<Technology[]>(
     [] as Technology[]
   );
 
@@ -56,6 +63,10 @@ export default function CreateStackModal({ errors }: Props) {
     }
   };
 
+  useEffect(() => {
+    setFrameworks(techs[selectedCategory]);
+    setSelectedTechs([]);
+  }, [selectedCategory, techs]);
   return (
     <Dialog
       open={true}
@@ -100,16 +111,21 @@ export default function CreateStackModal({ errors }: Props) {
             <select
               id="categories"
               name="category"
-              defaultValue=""
+              value={selectedCategory}
+              defaultValue={selectedCategory}
+              onChange={(e) => {
+                setSelectedCategory(e.target.value);
+              }}
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <option value="" disabled selected>
                 Select a category
               </option>
-              <option value="programming">Programming</option>
-              <option value="design">Design</option>
-              <option value="marketing">Marketing</option>
-              <option value="business">Business</option>
+              {categories.map((category, index) => (
+                <option key={index} value={category} className="capitalize">
+                  {category}
+                </option>
+              ))}
             </select>
             <ErrorComponent text={errors?.category?.toString()} />
           </div>
@@ -125,7 +141,7 @@ export default function CreateStackModal({ errors }: Props) {
               <option value="" disabled>
                 Select a framework
               </option>
-              {frameworks.map((framework) => (
+              {frameworks?.map((framework) => (
                 <option value={framework.name} key={framework.name}>
                   {framework.name}
                 </option>
@@ -175,61 +191,3 @@ function ErrorComponent({ text }: { text?: string }) {
     </div>
   );
 }
-
-const frameworks: Technology[] = [
-  {
-    name: "React",
-    category: "Frontend Framework",
-    website: "https://reactjs.org",
-  },
-  {
-    name: "Remix",
-    category: "Full-stack Framework",
-    website: "https://remix.run",
-  },
-  {
-    name: "Next.js",
-    category: "Full-stack Framework",
-    website: "https://nextjs.org",
-  },
-  {
-    name: "Angular",
-    category: "Frontend Framework",
-    website: "https://angular.io",
-  },
-  {
-    name: "Vue.js",
-    category: "Frontend Framework",
-    website: "https://vuejs.org",
-  },
-  {
-    name: "Django",
-    category: "Backend Framework",
-    website: "https://www.djangoproject.com",
-  },
-  {
-    name: "Express.js",
-    category: "Backend Framework",
-    website: "https://expressjs.com",
-  },
-  {
-    name: "Ruby on Rails",
-    category: "Full-stack Framework",
-    website: "https://rubyonrails.org",
-  },
-  {
-    name: "Laravel",
-    category: "Backend Framework",
-    website: "https://laravel.com",
-  },
-  {
-    name: "Spring Boot",
-    category: "Backend Framework",
-    website: "https://spring.io/projects/spring-boot",
-  },
-  {
-    name: "ASP.NET Core",
-    category: "Backend Framework",
-    website: "https://dotnet.microsoft.com/apps/aspnet",
-  },
-];
