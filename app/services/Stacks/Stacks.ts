@@ -52,11 +52,18 @@ export async function getStackById(id: string): Promise<Stack> {
   }
 }
 
-export async function getUserStacks(userId: string) {
+export async function getUserStacks(
+  userId: string,
+  page: number,
+  limit: number
+) {
   try {
-    const response = await AxiosInstance.get<Stack[]>("/stacks/user-stacks", {
-      params: { userId },
-    });
+    const response = await AxiosInstance.get<StackResponse>(
+      "/stacks/user-stacks",
+      {
+        params: { userId, page, limit },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Error fetching stacks:", error);

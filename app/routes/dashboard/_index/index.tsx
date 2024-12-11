@@ -23,13 +23,23 @@ import CreateStackModal from "./CreateStackModal";
 import { StackCreator } from "~/routes/stacks/_index/StackCreator";
 import { requireUserSession } from "~/sessions";
 import { z } from "zod";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "~/components/ui/pagination";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireUserSession(request);
   const url = new URL(request.url);
   const userId = url.searchParams.get("userId");
+  const page = url.searchParams.get("page");
 
-  const userStacks = await getUserStacks(userId!);
+  const userStacks = await getUserStacks(userId!, Number(page || 1), 9);
   const techs = await getAllTechnologies();
   return { userStacks, techs };
 }
@@ -87,6 +97,11 @@ export default function UserStacks() {
   const { userStacks, techs } = useLoaderData<typeof loader>();
   const formErrors = useActionData<typeof action>();
 
+  const totalPages = userStacks.metadata.totalPages;
+  const currentPage = userStacks.metadata.page;
+  const nextPage = userStacks.metadata.next?.page;
+  const prevPage = userStacks.metadata.previous?.page;
+
   return (
     <div className=" bg-background px-4 py-8 mx-auto">
       <h1 className="text-4xl font-bold mb-2">Profile</h1>
@@ -131,12 +146,57 @@ export default function UserStacks() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {userStacks.map((stack, index) => (
+        {userStacks.data.map((stack, index) => (
           <StackCreator key={index} stack={stack} />
         ))}
       </div>
+      {totalPages > 1 && (
+        <Pagination className="mt-8">
+          <PaginationContent>
+            {currentPage > 1 && (
+              <PaginationItem>
+                <PaginationPrevious
+                  to={{
+                    pathname: "/dashboard",
+                    search: `?userId=${user?.id}&page=${prevPage}`,
+                  }}
+                />
+              </PaginationItem>
+            )}
+            {Array(totalPages)
+              .fill(0)
+              .map((_item, index) => (
+                <PaginationItem key={index}>
+                  <PaginationLink
+                    to={{
+                      pathname: "/dashboard",
+                      search: `?userId=${user?.id}&page=${index + 1}`,
+                    }}
+                    isActive={currentPage == index + 1}
+                  >
+                    {index + 1}
+                  </PaginationLink>
+                </PaginationItem>
+              ))}
 
-      {userStacks.length === 0 && (
+            {totalPages > 5 && (
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+            )}
+            <PaginationItem>
+              <PaginationNext
+                to={{
+                  pathname: "/dashboard",
+                  search: `?userId=${user?.id}&page=${nextPage}`,
+                }}
+              />
+            </PaginationItem>
+          </PaginationContent>
+        </Pagination>
+      )}
+
+      {userStacks.data.length === 0 && (
         <div className="text-center py-12">
           <div className="bg-muted rounded-lg p-8 max-w-md mx-auto">
             <h3 className="text-lg font-semibold mb-2">No stacks yet</h3>
