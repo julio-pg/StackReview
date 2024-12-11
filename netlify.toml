@@ -1,10 +1,10 @@
 [build]
-  command = "remix build"
+  command = "pnpm run build"
   functions = "netlify/functions"
-  publish = "public"
+  publish = "build/client"
 
 [dev]
-  command = "remix watch"
+  command = "pnpm run dev"
   port = 3000
 
 [[redirects]]
