@@ -11,6 +11,7 @@ import { ReviewCard } from "./ReviewCard";
 import { ReviewForm } from "./ReviewForm";
 import { MessageSquare } from "lucide-react";
 import { Review } from "./types";
+import { useUserStore } from "~/store/userStore/userStore";
 // import { useToast } from "@/hooks/use-toast";
 
 interface ReviewSectionProps {
@@ -20,8 +21,8 @@ interface ReviewSectionProps {
 export function ReviewSection({ reviews: initialReviews }: ReviewSectionProps) {
   const [reviews] = useState<Review[]>(initialReviews);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const { user } = useUserStore();
 
-  // const handleSubmitReview = (reviewData: {
   //   rating: number;
   //   comment: string;
   // }) => {
@@ -53,7 +54,7 @@ export function ReviewSection({ reviews: initialReviews }: ReviewSectionProps) {
 
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="gap-2">
+            <Button className="gap-2" disabled={user ? false : true}>
               <MessageSquare className="w-4 h-4" />
               Write a Review
             </Button>

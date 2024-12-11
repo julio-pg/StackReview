@@ -4,7 +4,7 @@ import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
 import { Separator } from "~/components/ui/separator";
 import {
-  Code2,
+  Calendar,
   ExternalLink,
   // Github,
   // Heart,
@@ -208,15 +208,11 @@ export default function StackDetails() {
             <h3 className="font-semibold mb-4">Stack Information</h3>
             <div className="space-y-4 text-sm">
               <div className="flex items-center gap-2 text-muted-foreground">
-                <Code2 className="w-4 h-4" />
+                <Calendar className="w-4 h-4" />
                 <span>
                   Last updated {new Date(stack.updatedAt).toDateString()}
                 </span>
               </div>
-              {/* <div className="flex items-center gap-2 text-muted-foreground">
-                <ThumbsUp className="w-4 h-4" />
-                <span>{stack.reviews} developers reviewed this stack</span>
-              </div> */}
               <div className="flex items-center gap-2 text-muted-foreground">
                 <MessageSquare className="w-4 h-4" />
                 <span>Open for community feedback</span>
