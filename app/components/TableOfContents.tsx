@@ -1,9 +1,15 @@
 import { cn } from "~/lib/utils";
 import { useState, useEffect } from "react";
-import { privacySections } from "./PrivacyContent";
 import { Link } from "@remix-run/react";
 
-export function TableOfContents() {
+type props = {
+  sections: {
+    id: string;
+    title: string;
+    content: string[];
+  }[];
+};
+export function TableOfContents({ sections }: props) {
   const [activeSection, setActiveSection] = useState<string>("");
 
   useEffect(() => {
@@ -30,7 +36,7 @@ export function TableOfContents() {
         <h3 className="font-semibold">On this page</h3>
         <nav className="mt-4">
           <ul className="space-y-3 text-sm">
-            {privacySections.map((section) => (
+            {sections.map((section) => (
               <li key={section.id}>
                 <Link
                   to={{ hash: `#${section.id}` }}

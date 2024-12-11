@@ -13,8 +13,8 @@ const footerLinks = {
   ],
   legal: [
     { name: "Privacy", href: "privacy" },
-    { name: "Terms", href: "#" },
-    { name: "License", href: "#" },
+    { name: "Terms", href: "terms" },
+    { name: "License", href: "license" },
   ],
 };
 

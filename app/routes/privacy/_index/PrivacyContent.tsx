@@ -1,10 +1,10 @@
-import { PrivacySection } from "./PrivacySection";
+import { InfoSection } from "../../../components/InfoSection";
 
 export function PrivacyContent() {
   return (
     <main className="max-w-3xl space-y-12">
       {privacySections.map((section) => (
-        <PrivacySection key={section.id} {...section} />
+        <InfoSection key={section.id} {...section} />
       ))}
     </main>
   );

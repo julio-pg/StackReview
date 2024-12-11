@@ -4,7 +4,7 @@ interface PrivacySectionProps {
   content: string[];
 }
 
-export function PrivacySection({ id, title, content }: PrivacySectionProps) {
+export function InfoSection({ id, title, content }: PrivacySectionProps) {
   return (
     <section id={id} className="scroll-mt-16">
       <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
