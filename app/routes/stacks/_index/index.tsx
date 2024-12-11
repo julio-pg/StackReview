@@ -1,9 +1,21 @@
 import { getAllStacks } from "~/services/Stacks/Stacks";
 import { StackCreator } from "./StackCreator";
 import { useLoaderData } from "@remix-run/react";
+import { LoaderFunctionArgs } from "@remix-run/node";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationEllipsis,
+  PaginationItem,
+  PaginationLink,
+  PaginationNext,
+  PaginationPrevious,
+} from "~/components/ui/pagination";
 
-export const loader = async () => {
-  const stacks = await getAllStacks();
+export const loader = async ({ request }: LoaderFunctionArgs) => {
+  const url = new URL(request.url);
+  const page = url.searchParams.get("page");
+  const stacks = await getAllStacks(Number(page || 1), 9);
   if (!stacks) {
     throw new Response("Not Found", { status: 404 });
   }
@@ -34,6 +46,10 @@ export function ErrorBoundary() {
 
 export default function Stacks() {
   const { stacks } = useLoaderData<typeof loader>();
+  const totalPages = stacks.metadata.totalPages;
+  const currentPage = stacks.metadata.page;
+  const nextPage = stacks.metadata.next?.page;
+  const prevPage = stacks.metadata.previous?.page;
   return (
     <section className="py-24 bg-background">
       <div className="container mx-auto px-4">
@@ -44,10 +60,49 @@ export default function Stacks() {
           </p>
         </div>
         <div className="grid md:grid-cols-3 gap-8">
-          {stacks?.map((stack) => (
+          {stacks?.data.map((stack) => (
             <StackCreator key={stack.title} stack={stack} />
           ))}
         </div>
+        {totalPages > 1 && (
+          <Pagination className="mt-8">
+            <PaginationContent>
+              {currentPage > 1 && (
+                <PaginationItem>
+                  <PaginationPrevious
+                    to={{ pathname: "/stacks", search: `?page=${prevPage}` }}
+                  />
+                </PaginationItem>
+              )}
+              {Array(totalPages)
+                .fill(0)
+                .map((_item, index) => (
+                  <PaginationItem key={index}>
+                    <PaginationLink
+                      to={{
+                        pathname: "/stacks",
+                        search: `?page=${index + 1}`,
+                      }}
+                      isActive={currentPage == index + 1}
+                    >
+                      {index + 1}
+                    </PaginationLink>
+                  </PaginationItem>
+                ))}
+
+              {totalPages > 5 && (
+                <PaginationItem>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              )}
+              <PaginationItem>
+                <PaginationNext
+                  to={{ pathname: "/stacks", search: `?page=${nextPage}` }}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        )}
       </div>
     </section>
   );

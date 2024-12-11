@@ -106,7 +106,7 @@ export default function StackDetails() {
                       <div className="flex items-center gap-2 mb-2">
                         <h3 className="text-xl font-semibold">{tech?.name}</h3>
 
-                        <Badge>{tech?.category}</Badge>
+                        <Badge>{tech?.tag}</Badge>
                       </div>
                       <p className="text-muted-foreground">{tech?.name}</p>
                     </div>

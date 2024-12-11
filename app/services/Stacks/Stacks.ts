@@ -1,4 +1,4 @@
-import { Stack, Technology } from "~/routes/stacks/_index/types";
+import { Stack, StackResponse, Technology } from "~/routes/stacks/_index/types";
 import AxiosInstance from "../axios";
 import { RequestStack } from "~/routes/dashboard/types";
 import { RequestReview } from "~/routes/stacks/$username/$id/types";
@@ -22,13 +22,21 @@ export async function createReview(data: RequestReview): Promise<Stack> {
     throw error;
   }
 }
-export async function getAllStacks(): Promise<Stack[]> {
+export async function getAllStacks(
+  page: number,
+  limit?: number
+): Promise<StackResponse> {
   try {
-    const response = await AxiosInstance.get<Stack[]>("/stacks/all");
+    const response = await AxiosInstance.get<StackResponse>("/stacks/all", {
+      params: { page, limit },
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching stacks:", error);
-    return [];
+    return {
+      data: [],
+      metadata: { page: 0, limit: 0, total: 0, totalPages: 0 },
+    };
   }
 }
 

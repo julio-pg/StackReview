@@ -23,7 +23,9 @@ export function StackCreator({ stack }: StackCreatorProps) {
                 <span className="font-medium">{stack.rating}</span>
               </div>
             </div>
-            <p className="text-muted-foreground">{stack.description}</p>
+            <p className="text-muted-foreground">
+              {stack.description.split("", 40).join("")} ...
+            </p>
             <div className="flex flex-wrap gap-2 capitalize">
               <Badge variant="secondary">{stack.category}</Badge>
             </div>

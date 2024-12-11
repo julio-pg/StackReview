@@ -22,3 +22,17 @@ export interface Technology {
   tag: string;
   website: string;
 }
+
+export interface Metadata {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+  next?: { page: number; limit: number };
+  previous?: { page: number; limit: number };
+}
+
+export interface StackResponse {
+  data: Stack[];
+  metadata: Metadata;
+}
