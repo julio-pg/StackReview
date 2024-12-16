@@ -32,6 +32,8 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "~/components/ui/pagination";
+import { useEffect } from "react";
+import { toast } from "~/hooks/use-toast";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireUserSession(request);
@@ -92,7 +94,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 };
 
 export default function UserStacks() {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { user } = useUserStore();
   const { userStacks, techs } = useLoaderData<typeof loader>();
   const formErrors = useActionData<typeof action>();
@@ -101,6 +103,19 @@ export default function UserStacks() {
   const currentPage = userStacks.metadata.page;
   const nextPage = userStacks.metadata.next?.page;
   const prevPage = userStacks.metadata.previous?.page;
+
+  useEffect(() => {
+    const message = searchParams.get("toastMessage");
+    if (message) {
+      toast({
+        title: "Success",
+        description: message,
+      });
+      // Remove the query parameter after showing the toast
+      searchParams.delete("toastMessage");
+      setSearchParams(searchParams);
+    }
+  }, [searchParams, setSearchParams]);
 
   return (
     <div className=" bg-background px-4 py-8 mx-auto">

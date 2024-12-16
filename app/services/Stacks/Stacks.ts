@@ -12,6 +12,15 @@ export async function createStack(data: RequestStack): Promise<Stack> {
     throw error;
   }
 }
+export async function deleteStack(stackId: string): Promise<Stack> {
+  try {
+    const response = await AxiosInstance.delete<Stack>(`/stacks/${stackId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching stacks:", error);
+    throw error;
+  }
+}
 
 export async function createReview(data: RequestReview): Promise<Stack> {
   try {

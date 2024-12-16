@@ -1,8 +1,8 @@
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Badge } from "~/components/ui/badge";
 import { Card } from "~/components/ui/card";
-import { MessageSquareMore, Star } from "lucide-react";
-import { Link } from "@remix-run/react";
+import { MessageSquareMore, Star, Trash2 } from "lucide-react";
+import { Form, Link, useLocation } from "@remix-run/react";
 import { Stack } from "./types";
 
 interface StackCreatorProps {
@@ -10,63 +10,78 @@ interface StackCreatorProps {
 }
 
 export function StackCreator({ stack }: StackCreatorProps) {
+  const location = useLocation();
+  console.log(location.pathname);
   return (
-    <Link to={`/stacks/${stack.creator.username}/${stack.id}`}>
-      <Card className="overflow-hidden cursor-pointer hover:border-primary/50 transition-colors">
-        <div className="p-6 space-y-6">
-          {/* Stack Info */}
-          <div className="space-y-4">
-            <div className="flex justify-between items-start">
+    <Card className="overflow-hidden cursor-pointer hover:border-primary/50 transition-colors">
+      <div className="p-6 space-y-6">
+        {/* Stack Info */}
+        <div className="space-y-4">
+          <div className="flex justify-between items-start">
+            <Link to={`/stacks/${stack.creator.username}/${stack.id}`}>
               <h3 className="text-2xl font-semibold">{stack.title}</h3>
-              <div className="flex items-center gap-1">
-                <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
-                <span className="font-medium">{stack.rating}</span>
-              </div>
-            </div>
-            <p className="text-muted-foreground">
-              {stack.description.split("", 40).join("")} ...
-            </p>
-            <div className="flex flex-wrap gap-2 capitalize">
-              <Badge variant="secondary">{stack.category}</Badge>
+            </Link>
+            <div className="flex items-center gap-1">
+              <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
+              <span className="font-medium">{stack.rating}</span>
+              {location.pathname === "/dashboard" && (
+                <Form action="destroy" method="post">
+                  <input className="hidden" name="stackId" value={stack.id} />
+                  <input
+                    className="hidden"
+                    name="userId"
+                    value={stack.creator.id}
+                  />
+                  <button type="submit" className="hover:text-red-500">
+                    <Trash2 />
+                  </button>
+                </Form>
+              )}
             </div>
           </div>
-
-          {/* Creator Profile */}
-          <div className="pt-6 border-t border-border/60">
-            <div className="flex items-start gap-4">
-              <Avatar className="w-12 h-12">
-                <AvatarImage
-                  src={stack.creator.avatar}
-                  alt={stack.creator.name}
-                />
-                <AvatarFallback>{stack.creator.name[0]}</AvatarFallback>
-              </Avatar>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <h4 className="text-sm font-semibold">
-                      {stack.creator.name}
-                    </h4>
-                    <p className="text-sm text-muted-foreground">
-                      @{stack.creator.username}
-                    </p>
-                  </div>
-                  {/* <Button variant="secondary" size="sm">
-                    Follow
-                  </Button> */}
-                </div>
-                <Badge variant="secondary" className="mt-2">
-                  {stack.creator.expertise}
-                </Badge>
-              </div>
-            </div>
-            <div className="flex items-center gap-2 mt-4 text-sm text-muted-foreground">
-              <MessageSquareMore className="w-4 h-4" />
-              <span>{stack.reviews.length} reviews</span>
-            </div>
+          <p className="text-muted-foreground">
+            {stack.description.split("", 40).join("")} ...
+          </p>
+          <div className="flex flex-wrap gap-2 capitalize">
+            <Badge variant="secondary">{stack.category}</Badge>
           </div>
         </div>
-      </Card>
-    </Link>
+
+        {/* Creator Profile */}
+        <div className="pt-6 border-t border-border/60">
+          <div className="flex items-start gap-4">
+            <Avatar className="w-12 h-12">
+              <AvatarImage
+                src={stack.creator.avatar}
+                alt={stack.creator.name}
+              />
+              <AvatarFallback>{stack.creator.name[0]}</AvatarFallback>
+            </Avatar>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h4 className="text-sm font-semibold">
+                    {stack.creator.name}
+                  </h4>
+                  <p className="text-sm text-muted-foreground">
+                    @{stack.creator.username}
+                  </p>
+                </div>
+                {/* <Button variant="secondary" size="sm">
+                    Follow
+                  </Button> */}
+              </div>
+              <Badge variant="secondary" className="mt-2">
+                {stack.creator.expertise}
+              </Badge>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 mt-4 text-sm text-muted-foreground">
+            <MessageSquareMore className="w-4 h-4" />
+            <span>{stack.reviews.length} reviews</span>
+          </div>
+        </div>
+      </div>
+    </Card>
   );
 }
