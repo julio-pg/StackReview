@@ -108,7 +108,9 @@ export default function StackDetails() {
 
                         <Badge>{tech?.tag}</Badge>
                       </div>
-                      <p className="text-muted-foreground">{tech?.name}</p>
+                      <p className="text-muted-foreground">
+                        {tech?.description}
+                      </p>
                     </div>
                     <div className="flex gap-2">
                       <Button variant="ghost" size="icon" asChild>
