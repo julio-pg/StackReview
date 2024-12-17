@@ -11,7 +11,6 @@ interface StackCreatorProps {
 
 export function StackCreator({ stack }: StackCreatorProps) {
   const location = useLocation();
-  console.log(location.pathname);
   return (
     <Card className="overflow-hidden cursor-pointer hover:border-primary/50 transition-colors">
       <div className="p-6 space-y-6">
@@ -26,11 +25,17 @@ export function StackCreator({ stack }: StackCreatorProps) {
               <span className="font-medium">{stack.rating}</span>
               {location.pathname === "/dashboard" && (
                 <Form action="destroy" method="post">
-                  <input className="hidden" name="stackId" value={stack.id} />
+                  <input
+                    className="hidden"
+                    name="stackId"
+                    value={stack.id}
+                    readOnly
+                  />
                   <input
                     className="hidden"
                     name="userId"
                     value={stack.creator.id}
+                    readOnly
                   />
                   <button type="submit" className="hover:text-red-500">
                     <Trash2 />

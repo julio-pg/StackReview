@@ -6,3 +6,23 @@ export type RequestStack = Omit<
 > & {
   creatorId: string;
 };
+
+export type UpdateCreatorRequest = Pick<
+  Creator,
+  "name" | "username" | "expertise" | "github" | "twitter"
+>;
+
+export interface StackErrors {
+  title?: string[] | undefined;
+  description?: string[] | undefined;
+  category?: string[] | undefined;
+  technologies?: string[] | undefined;
+}
+
+export interface CreatorErrors {
+  name?: string[] | undefined;
+  username?: string[] | undefined;
+  expertise?: string[] | undefined;
+  github?: string[] | undefined;
+  twitter?: string[] | undefined;
+}

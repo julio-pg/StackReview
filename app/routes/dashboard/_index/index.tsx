@@ -1,18 +1,18 @@
 import { Button } from "~/components/ui/button";
-import { Github, Plus, Twitter } from "lucide-react";
+import { Github, Pen, Plus, Twitter } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { useUserStore } from "~/store/userStore/userStore";
 import {
-  createStack,
   getAllTechnologies,
   getUserStacks,
+  handleUpdateCreator,
 } from "~/services/Stacks/Stacks";
 import {
   ActionFunctionArgs,
   LoaderFunctionArgs,
   redirect,
 } from "@remix-run/node";
-import { RequestStack } from "../types";
+
 import {
   Link,
   useActionData,
@@ -22,7 +22,7 @@ import {
 import CreateStackModal from "./CreateStackModal";
 import { StackCreator } from "~/routes/stacks/_index/StackCreator";
 import { requireUserSession } from "~/sessions";
-import { z } from "zod";
+
 import {
   Pagination,
   PaginationContent,
@@ -34,6 +34,9 @@ import {
 } from "~/components/ui/pagination";
 import { useEffect } from "react";
 import { toast } from "~/hooks/use-toast";
+import { Badge } from "~/components/ui/badge";
+import UpdateCreatorModal from "./UpdateCreatorModal";
+import { CreatorErrors, StackErrors } from "../types";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireUserSession(request);
@@ -49,43 +52,21 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {
     const formData = await request.formData();
-    const userData = JSON.parse(formData.get("creator") as string);
+    const creatorId = formData.get("creatorId") as string;
 
-    const updates: RequestStack = {
-      title: formData.get("title") as string,
-      description: formData.get("description") as string,
-      category: formData.get("category") as string,
-      creatorId: userData!.id!,
-      technologies: JSON.parse(formData.get("technologies") as string),
-    };
-
-    const stackSchema = z.object({
-      title: z.string().min(1, "Title is required"),
-      description: z.string().min(1, "Description is required"),
-      category: z.string().min(1, "Category is required"),
-      technologies: z
-        .array(
-          z.object({
-            name: z.string(),
-            category: z.string(),
-            website: z.string(),
-          })
-        )
-        .nonempty("At least one technology is required"),
-    });
-
-    const validationResult = stackSchema.safeParse(updates);
-    if (!validationResult.success) {
-      console.error("Validation failed:");
-      return validationResult.error.formErrors.fieldErrors;
+    const { errors, newCreator } = await handleUpdateCreator(formData);
+    console.log(newCreator);
+    if (errors) {
+      return { errors };
     }
-    await createStack(updates);
-    return redirect(`/dashboard?userId=${userData!.id!}`);
+    return redirect(
+      `/dashboard?userId=${creatorId}&newCreator=${JSON.stringify(newCreator)}`
+    );
   } catch (error) {
     const formData = await request.formData();
-    const userData = JSON.parse(formData.get("creator") as string);
+    const creatorId = formData.get("creatorId") as string;
     console.error("Failed to create stack:", error);
-    return redirect(`/dashboard?userId=${userData!.id!}`, {
+    return redirect(`/dashboard?userId=${creatorId}`, {
       headers: {
         "Set-Cookie": "error=true; HttpOnly; Path=/; SameSite=Strict",
       },
@@ -95,7 +76,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
 export default function UserStacks() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { user } = useUserStore();
+  const { user, setUser } = useUserStore();
   const { userStacks, techs } = useLoaderData<typeof loader>();
   const formErrors = useActionData<typeof action>();
 
@@ -106,6 +87,7 @@ export default function UserStacks() {
 
   useEffect(() => {
     const message = searchParams.get("toastMessage");
+    const newCreator = searchParams.get("newCreator");
     if (message) {
       toast({
         title: "Success",
@@ -114,6 +96,11 @@ export default function UserStacks() {
       // Remove the query parameter after showing the toast
       searchParams.delete("toastMessage");
       setSearchParams(searchParams);
+    } else if (newCreator) {
+      localStorage.setItem("loginData", newCreator);
+      setUser(JSON.parse(newCreator));
+      searchParams.delete("newCreator");
+      setSearchParams(searchParams);
     }
   }, [searchParams, setSearchParams]);
 
@@ -121,12 +108,30 @@ export default function UserStacks() {
     <div className=" bg-background px-4 py-8 mx-auto">
       <h1 className="text-4xl font-bold mb-2">Profile</h1>
       <div className="flex items-center gap-4 mb-8">
-        <Avatar className="w-32 h-32">
-          <AvatarImage src={user?.avatar} alt={"test"} />
-          <AvatarFallback>{user?.name[0]}</AvatarFallback>
-        </Avatar>
+        <div className="flex flex-col">
+          <Avatar className="w-32 h-32">
+            <AvatarImage src={user?.avatar} alt={"test"} />
+            <AvatarFallback>{user?.name[0]}</AvatarFallback>
+          </Avatar>
+          <Link
+            to={{
+              pathname: "/dashboard",
+              search: `?userId=${user?.id}&edit_creator=true`,
+            }}
+            replace={true}
+          >
+            <Button variant="outline">
+              <Pen /> Edit Profile
+            </Button>
+          </Link>
+        </div>
+
         <div className="flex flex-col gap-2">
           <p className="text-2xl font-bold">{user?.name}</p>
+          <p className="text-sm text-muted-foreground">@{user?.username}</p>
+          <Badge variant="secondary" className="mt-2">
+            {user?.expertise}
+          </Badge>
           {user?.github && (
             <p className="text-muted-foreground flex items-center gap-2">
               <Github className="w-4 h-4" /> @{user?.github}
@@ -137,7 +142,6 @@ export default function UserStacks() {
               <Twitter className="w-4 h-4" /> @{user?.twitter}
             </p>
           )}
-          <Button variant="outline">Edit Profile</Button>
         </div>
       </div>
       <div className="flex justify-between items-center mb-8">
@@ -224,7 +228,10 @@ export default function UserStacks() {
         </div>
       )}
       {searchParams.get("create_stack") && (
-        <CreateStackModal errors={formErrors} techs={techs} />
+        <CreateStackModal errors={formErrors as StackErrors} techs={techs} />
+      )}
+      {searchParams.get("edit_creator") && (
+        <UpdateCreatorModal errors={formErrors as CreatorErrors} />
       )}
     </div>
   );

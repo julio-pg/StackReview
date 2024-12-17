@@ -17,14 +17,11 @@ import { Form, useNavigate } from "@remix-run/react";
 import { useUserStore } from "~/store/userStore/userStore";
 import { useEffect, useState } from "react";
 import { CircleX } from "lucide-react";
+import { StackErrors } from "../types";
+import ErrorComponent from "~/components/ErrorComponent";
 
 type Props = {
-  errors?: {
-    title?: string[] | undefined;
-    description?: string[] | undefined;
-    category?: string[] | undefined;
-    technologies?: string[] | undefined;
-  };
+  errors?: StackErrors;
   techs: { [x: string]: Technology[] };
 };
 const categories = ["programming", "design", "marketing", "business"];
@@ -161,11 +158,7 @@ export default function CreateStackModal({ errors, techs }: Props) {
                 </Badge>
               ))}
             </div>
-            <Input
-              className="hidden"
-              name="creator"
-              value={JSON.stringify(user!)}
-            />
+            <Input className="hidden" name="creatorId" value={user?.id} />
             <Input
               className="hidden"
               name="technologies"
@@ -181,13 +174,5 @@ export default function CreateStackModal({ errors, techs }: Props) {
         </Form>
       </DialogContent>
     </Dialog>
-  );
-}
-
-function ErrorComponent({ text }: { text?: string }) {
-  return (
-    <div>
-      <p className="text-red-500">{text}</p>
-    </div>
   );
 }
