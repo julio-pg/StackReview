@@ -1,4 +1,3 @@
-import { Layers } from "lucide-react";
 import { Link } from "@remix-run/react";
 import GoogleSignupButton from "./GoogleSignupButton";
 import { useUserStore } from "~/store/userStore/userStore";
@@ -12,7 +11,11 @@ export default function Navbar() {
       <div className="flex h-16 items-center px-4">
         <div className="flex gap-6 md:gap-10">
           <Link className="flex items-center space-x-2" to="/">
-            <Layers className="h-6 w-6" />
+            <img
+              src="/stackReviewLogo-mini.png"
+              alt="logo"
+              className="w-10 h-10"
+            />
             <span className="font-bold">StackReview</span>
           </Link>
           <nav className="hidden gap-6 md:flex">

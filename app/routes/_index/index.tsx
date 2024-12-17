@@ -14,6 +14,26 @@ export const meta: MetaFunction = () => {
       content:
         "Discover, review, and create the ideal tech stack for your next project. Join thousands of developers making informed technology choices.",
     },
+    //<-- Open Graph / Facebook -->
+    { name: "og:type", content: "website" },
+    { name: "og:url", content: "https://stack-review.netlify.app/" },
+    { name: "og:title", content: "Stack Review" },
+    {
+      name: "og:description",
+      content:
+        "Discover, review, and create the ideal tech stack for your next project. Join thousands of developers making informed technology choices.",
+    },
+    { name: "og:image", content: "/stack-review-home.png" },
+    //<-- Twitter -->
+    { name: "twitter:card", content: "summary_large_image" },
+    { name: "twitter:url", content: "https://stack-review.netlify.app/" },
+    { name: "twitter:title", content: "Stack Review" },
+    {
+      name: "twitter:description",
+      content:
+        "Discover, review, and create the ideal tech stack for your next project. Join thousands of developers making informed technology choices.",
+    },
+    { name: "twitter:image", content: "/stack-review-home.png" },
   ];
 };
 
