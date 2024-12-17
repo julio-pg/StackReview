@@ -46,12 +46,12 @@ export default function Footer() {
           <ul className="flex space-x-6 mt-4 md:mt-0">
             {footerLinks.legal.map((link) => (
               <li key={link.name}>
-                <a
-                  href={link.href}
+                <Link
+                  to={link.href}
                   className="text-muted-foreground hover:text-primary transition-colors"
                 >
                   {link.name}
-                </a>
+                </Link>
               </li>
             ))}
           </ul>
