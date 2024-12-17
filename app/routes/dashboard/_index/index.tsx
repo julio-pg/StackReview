@@ -19,7 +19,6 @@ import {
   useLoaderData,
   useSearchParams,
 } from "@remix-run/react";
-import CreateStackModal from "./CreateStackModal";
 import { StackCreator } from "~/routes/stacks/_index/StackCreator";
 import { requireUserSession } from "~/sessions";
 
@@ -36,7 +35,7 @@ import { useEffect } from "react";
 import { toast } from "~/hooks/use-toast";
 import { Badge } from "~/components/ui/badge";
 import UpdateCreatorModal from "./UpdateCreatorModal";
-import { CreatorErrors, StackErrors } from "../types";
+import { CreatorErrors } from "../types";
 
 export async function loader({ request }: LoaderFunctionArgs) {
   await requireUserSession(request);
@@ -77,7 +76,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 export default function UserStacks() {
   const [searchParams, setSearchParams] = useSearchParams();
   const { user, setUser } = useUserStore();
-  const { userStacks, techs } = useLoaderData<typeof loader>();
+  const { userStacks } = useLoaderData<typeof loader>();
   const formErrors = useActionData<typeof action>();
 
   const totalPages = userStacks.metadata.totalPages;
@@ -153,8 +152,8 @@ export default function UserStacks() {
         </div>
         <Link
           to={{
-            pathname: "/dashboard",
-            search: `?userId=${user?.id}&create_stack=true`,
+            pathname: "/create",
+            search: `?userId=${user?.id}`,
           }}
           replace={true}
         >
@@ -223,12 +222,8 @@ export default function UserStacks() {
               Create your first stack to share your favorite technology
               combinations with the community.
             </p>
-            {/* <CreateStackModal /> */}
           </div>
         </div>
-      )}
-      {searchParams.get("create_stack") && (
-        <CreateStackModal errors={formErrors as StackErrors} techs={techs} />
       )}
       {searchParams.get("edit_creator") && (
         <UpdateCreatorModal errors={formErrors as CreatorErrors} />

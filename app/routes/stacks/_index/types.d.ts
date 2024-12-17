@@ -21,6 +21,7 @@ export interface Technology {
   category: string;
   tag: string;
   website: string;
+  description: string;
 }
 
 export interface Metadata {
