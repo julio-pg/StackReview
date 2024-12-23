@@ -4,6 +4,7 @@ import { useUserStore } from "~/store/userStore/userStore";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { UserNav } from "./UserNav";
 
+// TODO: add categories dropdown
 export default function Navbar() {
   const { user } = useUserStore();
   return (

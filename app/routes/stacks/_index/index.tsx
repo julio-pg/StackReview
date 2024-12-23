@@ -44,6 +44,7 @@ export function ErrorBoundary() {
   }
 }
 
+// TODO:add search functionality that includes filters for software categories, ratings, and user reviews.
 export default function Stacks() {
   const { stacks } = useLoaderData<typeof loader>();
   const totalPages = stacks.metadata.totalPages;

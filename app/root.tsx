@@ -28,6 +28,8 @@ export const links: LinksFunction = () => [
   },
   { rel: "icon", href: "/stackReviewLogo-mini.png" },
 ];
+
+// TODO: make it a PWA
 export function ErrorBoundary() {
   try {
     return (
