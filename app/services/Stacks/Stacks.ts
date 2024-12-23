@@ -111,13 +111,20 @@ export async function createReview(data: RequestReview): Promise<Stack> {
     throw error;
   }
 }
-export async function getAllStacks(
-  page: number,
-  limit?: number
-): Promise<StackResponse> {
+export async function getAllStacks({
+  page,
+  limit,
+  category,
+  rating,
+}: {
+  page: number;
+  limit?: number;
+  category?: string;
+  rating?: string;
+}): Promise<StackResponse> {
   try {
     const response = await AxiosInstance.get<StackResponse>("/stacks/all", {
-      params: { page, limit },
+      params: { page, limit, category, rating },
     });
     return response.data;
   } catch (error) {

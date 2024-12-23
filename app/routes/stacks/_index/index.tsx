@@ -1,6 +1,6 @@
 import { getAllStacks } from "~/services/Stacks/Stacks";
 import { StackCreator } from "./StackCreator";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, useNavigate } from "@remix-run/react";
 import { LoaderFunctionArgs } from "@remix-run/node";
 import {
   Pagination,
@@ -11,15 +11,21 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "~/components/ui/pagination";
+import SelectBox from "~/components/SelectBox";
+import { FilterIcon } from "lucide-react";
+import { Button } from "~/components/ui/button";
+import DataNotFound from "~/components/DataNotFound";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
-  const page = url.searchParams.get("page");
-  const stacks = await getAllStacks(Number(page || 1), 9);
+  const page = Number(url.searchParams.get("page") || 1);
+  const category = url.searchParams.get("category") || undefined;
+  const rating = url.searchParams.get("rating") || undefined;
+  const stacks = await getAllStacks({ page, limit: 9, category, rating });
   if (!stacks) {
     throw new Response("Not Found", { status: 404 });
   }
-  return { stacks };
+  return { stacks, category, rating, page };
 };
 
 export function ErrorBoundary() {
@@ -44,25 +50,74 @@ export function ErrorBoundary() {
   }
 }
 
-// TODO:add search functionality that includes filters for software categories, ratings, and user reviews.
 export default function Stacks() {
-  const { stacks } = useLoaderData<typeof loader>();
+  const { stacks, category, page, rating } = useLoaderData<typeof loader>();
+  const navigate = useNavigate();
   const totalPages = stacks.metadata.totalPages;
   const currentPage = stacks.metadata.page;
   const nextPage = stacks.metadata.next?.page;
   const prevPage = stacks.metadata.previous?.page;
+  const categories = ["programming", "design", "marketing", "business"];
+  const stars = ["0", "1", "2", "3", "4", "5"];
+  const isShowClearButton = Boolean(category || rating);
   return (
-    <section className="py-24 bg-background">
-      <div className="container mx-auto px-4">
+    <section className="py-6 bg-background">
+      <div className="flex gap-3 items-center ml-6">
+        <FilterIcon />
+        <div className="flex gap-2">
+          <SelectBox
+            name="Category"
+            items={categories}
+            value={category}
+            onChange={(value) => {
+              navigate({
+                pathname: "/stacks",
+                search: buildSearchQuery({ page, category: value, rating }),
+              });
+            }}
+          />
+          <SelectBox
+            name="Rating"
+            items={stars}
+            format={(v) => v + " Star"}
+            value={rating}
+            onChange={(value) => {
+              navigate({
+                pathname: "/stacks",
+                search: buildSearchQuery({ page, category, rating: value }),
+              });
+            }}
+          />
+          {isShowClearButton && (
+            <Button
+              variant={"destructive"}
+              onClick={() => {
+                navigate({
+                  pathname: "/stacks",
+                  search: buildSearchQuery({ page }),
+                });
+              }}
+            >
+              clear
+            </Button>
+          )}
+        </div>
+      </div>
+      <div className="container mx-auto px-4 mt-8">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4">Featured Creator Stacks</h2>
           <p className="text-muted-foreground text-lg">
             Discover the tools and technologies trusted by industry leaders
           </p>
         </div>
+        {totalPages == 0 && (
+          <div className="">
+            <DataNotFound title="No stacks found" />
+          </div>
+        )}
         <div className="grid md:grid-cols-3 gap-8">
-          {stacks?.data.map((stack) => (
-            <StackCreator key={stack.title} stack={stack} />
+          {stacks?.data.map((stack, i) => (
+            <StackCreator key={stack.title + i} stack={stack} />
           ))}
         </div>
         {totalPages > 1 && (
@@ -107,4 +162,22 @@ export default function Stacks() {
       </div>
     </section>
   );
+}
+
+function buildSearchQuery({
+  page,
+  category,
+  rating,
+}: {
+  page: number;
+  category?: string;
+  rating?: string;
+}): string {
+  return [
+    `page=${page}`,
+    category && `category=${category}`,
+    rating && `rating=${rating}`,
+  ]
+    .filter(Boolean) // Remove falsy values (undefined, null, etc.)
+    .join("&");
 }

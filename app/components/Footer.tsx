@@ -6,10 +6,10 @@ const footerLinks = {
     { name: "Contact", href: "#" },
   ],
   categories: [
-    { name: "Programming", href: "#" },
-    { name: "Design", href: "#" },
-    { name: "Marketing", href: "#" },
-    { name: "Business", href: "#" },
+    { name: "Programming", href: "/stacks?category=programming" },
+    { name: "Design", href: "/stacks?category=design" },
+    { name: "Marketing", href: "/stacks?category=marketing" },
+    { name: "Business", href: "/stacks?category=business" },
   ],
   legal: [
     { name: "Privacy", href: "privacy" },
