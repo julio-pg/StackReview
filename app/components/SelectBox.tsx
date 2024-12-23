@@ -20,7 +20,6 @@ export default function SelectBox({
   format,
   onChange,
 }: SelectBoxParams) {
-  console.log("value", name, value);
   return (
     <Select onValueChange={onChange} value={value || ""}>
       <SelectTrigger className="w-[180px]">
