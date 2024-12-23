@@ -14,6 +14,7 @@ import {
 import SelectBox from "~/components/SelectBox";
 import { FilterIcon } from "lucide-react";
 import { Button } from "~/components/ui/button";
+import DataNotFound from "~/components/DataNotFound";
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
@@ -109,6 +110,11 @@ export default function Stacks() {
             Discover the tools and technologies trusted by industry leaders
           </p>
         </div>
+        {totalPages == 0 && (
+          <div className="">
+            <DataNotFound title="No stacks found" />
+          </div>
+        )}
         <div className="grid md:grid-cols-3 gap-8">
           {stacks?.data.map((stack, i) => (
             <StackCreator key={stack.title + i} stack={stack} />
