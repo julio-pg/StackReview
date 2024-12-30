@@ -1,0 +1,20 @@
+{
+  "short_name": "StackReview",
+  "name": "StackReview",
+  "icons": [
+    {
+      "src": "icons/stackReviewLogo192px.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "icons/stackReviewLogo512px.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
