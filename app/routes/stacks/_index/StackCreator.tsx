@@ -55,13 +55,20 @@ export function StackCreator({ stack }: StackCreatorProps) {
         {/* Creator Profile */}
         <div className="pt-6 border-t border-border/60">
           <div className="flex items-start gap-4">
-            <Avatar className="w-12 h-12">
-              <AvatarImage
-                src={stack.creator.avatar}
-                alt={stack.creator.name}
-              />
-              <AvatarFallback>{stack.creator.name[0]}</AvatarFallback>
-            </Avatar>
+            <Link
+              to={{
+                pathname: `/profile/${stack.creator.username}`,
+                search: `?userId=${stack.creator?.id}`,
+              }}
+            >
+              <Avatar className="w-12 h-12">
+                <AvatarImage
+                  src={stack.creator.avatar}
+                  alt={stack.creator.name}
+                />
+                <AvatarFallback>{stack.creator.name[0]}</AvatarFallback>
+              </Avatar>
+            </Link>
             <div className="flex-1 min-w-0">
               <div className="flex items-center justify-between">
                 <div>

@@ -147,6 +147,17 @@ export async function getStackById(id: string): Promise<Stack> {
     throw error;
   }
 }
+export async function getSingleUser(id: string) {
+  try {
+    const response = await AxiosInstance.get<Creator>(
+      `/stacks/single-user/${id}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    throw error;
+  }
+}
 
 export async function getUserStacks(
   userId: string,
