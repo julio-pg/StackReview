@@ -83,11 +83,15 @@ export default function App() {
                 Trusted and reviewed by thousands of developers
               </p>
             </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              {popularStacks.map((stack) => (
-                <StackCreator key={stack.id} stack={stack} />
-              ))}
-            </div>
+            {popularStacks.length === 0 ? (
+              <div className="text-2xl">No data available at the moment.</div>
+            ) : (
+              <div className="grid md:grid-cols-3 gap-8">
+                {popularStacks?.map((stack) => (
+                  <StackCreator key={stack.id} stack={stack} />
+                ))}
+              </div>
+            )}
           </div>
         </section>
 
