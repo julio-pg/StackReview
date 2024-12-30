@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { loginWithGoogle } from "~/services/signup";
 import { useUserStore } from "~/store/userStore/userStore";
 import { Button } from "./ui/button";
+import { toast } from "~/hooks/use-toast";
 
 export default function GoogleLoginButton() {
   const { setUser } = useUserStore();
@@ -14,16 +15,17 @@ export default function GoogleLoginButton() {
     // Send token to your server for verification and authentication.
     const token = response.code!;
     loginWithGoogle(token)
-      .then(async (user) => {
-        const userString = JSON.stringify(user);
-        localStorage.setItem("loginData", userString);
-        setUser(user);
+      .then((user) => {
         axios.post(`${import.meta.env.VITE_HOST_URL}/api/auth`, {
           userId: user.id,
         });
+        const userString = JSON.stringify(user);
+        localStorage.setItem("loginData", userString);
+        setUser(user);
       })
       .catch((error) => {
         console.error("Error Login with google:", error);
+        toast({ title: "Error Login", variant: "destructive" });
       });
   };
 

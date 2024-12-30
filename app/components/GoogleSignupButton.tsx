@@ -15,13 +15,13 @@ export default function GoogleSignupButton() {
     // Send token to your server for verification and authentication.
     const token = response.code!;
     signUpWithGoogle(token)
-      .then(async (user) => {
-        const userString = JSON.stringify(user);
-        localStorage.setItem("loginData", userString);
-        setUser(user);
+      .then((user) => {
         axios.post(`${import.meta.env.VITE_HOST_URL}/api/auth`, {
           userId: user.id,
         });
+        const userString = JSON.stringify(user);
+        localStorage.setItem("loginData", userString);
+        setUser(user);
       })
       .catch((error) => {
         console.error("Error storing token in local storage:", error);
