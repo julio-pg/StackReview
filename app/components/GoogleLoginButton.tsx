@@ -25,7 +25,10 @@ export default function GoogleLoginButton() {
       })
       .catch((error) => {
         console.error("Error Login with google:", error);
-        toast({ title: "Error Login", variant: "destructive" });
+        toast({
+          title: "Error Login try again please",
+          variant: "destructive",
+        });
       });
   };
 
