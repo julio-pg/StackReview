@@ -1,4 +1,3 @@
-import { Layers } from "lucide-react";
 import { Link } from "@remix-run/react";
 const footerLinks = {
   product: [
@@ -25,8 +24,12 @@ export default function Footer() {
         <div className="grid grid-cols-2 gap-8 md:grid-cols-5">
           <div className="col-span-2">
             <div className="flex items-center space-x-2">
-              <Layers className="h-6 w-6" />
-              <span className="font-bold">StackReview</span>
+              <img
+                src="/stackReviewLogo-mini.png"
+                alt="logo"
+                className="w-6 h-6"
+              />
+              <h2 className="font-bold">StackReview</h2>
             </div>
             <p className="mt-4 text-muted-foreground">
               Discover and share the best tech stacks for your next project.
@@ -70,7 +73,7 @@ function FooterLink({
 }) {
   return (
     <div>
-      <h3 className="text-lg font-semibold mb-4">{title}</h3>
+      <h2 className="text-lg font-semibold mb-4">{title}</h2>
       <ul className="space-y-3">
         {links.map((link) => (
           <li key={link.name}>

@@ -54,7 +54,7 @@ export default function ProfilePage() {
       </div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-4xl font-bold">User Stacks</h1>
+          <h2 className="text-4xl font-bold">User Stacks</h2>
           <p className="text-muted-foreground mt-2">
             Explore and manage the technology stacks created by this user
           </p>

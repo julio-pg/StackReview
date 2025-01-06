@@ -16,6 +16,7 @@ export default {
           "Segoe UI Symbol",
           "Noto Color Emoji",
         ],
+        vintage: ['"Libre Baskerville"', "serif"],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -25,6 +26,7 @@ export default {
       colors: {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        "vintage-gold": "var(--vintage-gold)",
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",

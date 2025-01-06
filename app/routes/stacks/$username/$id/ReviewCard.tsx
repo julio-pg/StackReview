@@ -22,15 +22,13 @@ export function ReviewCard({ review }: ReviewCardProps) {
               <h4 className="font-semibold">{review.creator.name}</h4>
               <div className="flex items-center gap-2 mt-1">
                 <StarRating rating={review.rate} readonly size="sm" />
-                <span className="text-sm text-muted-foreground">
+                <span className="text-sm">
                   {formatDistanceToNow(review.createdAt, { addSuffix: true })}
                 </span>
               </div>
             </div>
           </div>
-          <p className="mt-2 text-muted-foreground whitespace-pre-wrap">
-            {review.comment}
-          </p>
+          <p className="mt-2 whitespace-pre-wrap">{review.comment}</p>
         </div>
       </div>
     </Card>

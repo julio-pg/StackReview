@@ -14,6 +14,7 @@ import Footer from "./components/Footer";
 import { Button } from "./components/ui/button";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Toaster } from "./components/ui/toaster";
+import { useEffect } from "react";
 
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
@@ -24,7 +25,7 @@ export const links: LinksFunction = () => [
   },
   {
     rel: "stylesheet",
-    href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
+    href: "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap",
   },
   { rel: "icon", href: "/stackReviewLogo-mini.png" },
   { rel: "manifest", href: "/manifest.json" },
@@ -77,6 +78,26 @@ export function Layout({ children }: { children: React.ReactNode }) {
   );
 }
 
+function registerServiceWorker() {
+  if ("serviceWorker" in navigator) {
+    window.addEventListener("load", () => {
+      navigator.serviceWorker.register("/service-worker.js").then(
+        (registration) => {
+          console.log(
+            "ServiceWorker registration successful",
+            registration.scope
+          );
+        },
+        (err) => {
+          console.log("ServiceWorker registration failed: ", err);
+        }
+      );
+    });
+  }
+}
 export default function App() {
+  useEffect(() => {
+    registerServiceWorker();
+  }, []);
   return <Outlet />;
 }

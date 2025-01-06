@@ -59,7 +59,7 @@ export default function StackDetails() {
           <div className="flex items-center gap-2">
             <Badge variant="secondary">{stack.category}</Badge>
           </div>
-          <h1 className="text-4xl font-bold">{stack?.title}</h1>
+          <h2 className="text-4xl font-bold">{stack?.title}</h2>
           <p className="text-xl text-muted-foreground">{stack?.description}</p>
         </div>
         <div className="flex gap-3">
@@ -78,19 +78,19 @@ export default function StackDetails() {
             <div className="grid grid-cols-2 gap-4 text-center">
               <div>
                 <div className="flex items-center justify-center gap-1 text-2xl font-bold">
-                  <Star className="w-5 h-5 fill-yellow-500 text-yellow-500" />
+                  <Star className="w-5 h-5 fill-vintage-gold text-vintage-gold" />
                   {stack?.rating}
                 </div>
-                <p className="text-sm text-muted-foreground">Rating</p>
+                <p className="text-sm ">Rating</p>
               </div>
               <div>
                 <div className="flex items-center justify-center gap-1 text-2xl font-bold">
-                  <MessageSquareMore className="w-5 h-5" />
+                  <MessageSquareMore className="w-5 h-5 text-vintage-gold" />
                   <div className="text-2xl font-bold">
                     {stack.reviews.length}
                   </div>
                 </div>
-                <p className="text-sm text-muted-foreground">Reviews</p>
+                <p className="text-sm ">Reviews</p>
               </div>
             </div>
           </Card>
@@ -108,9 +108,7 @@ export default function StackDetails() {
 
                         <Badge>{tech?.tag}</Badge>
                       </div>
-                      <p className="text-muted-foreground">
-                        {tech?.description}
-                      </p>
+                      <p>{tech?.description}</p>
                     </div>
                     <div className="flex gap-2">
                       <Button variant="ghost" size="icon" asChild>
@@ -136,7 +134,12 @@ export default function StackDetails() {
           <Card className="p-6">
             <div className="space-y-6">
               <div className="flex items-start gap-4">
-                <Link to={`/profile/${stack.creator.id}`}>
+                <Link
+                  to={{
+                    pathname: `/profile/${stack.creator.username}`,
+                    search: `?userId=${stack.creator?.id}`,
+                  }}
+                >
                   <Avatar className="w-16 h-16">
                     <AvatarImage
                       src={stack?.creator?.avatar}
@@ -149,9 +152,7 @@ export default function StackDetails() {
                   <h3 className="text-lg font-semibold">
                     {stack?.creator?.name}
                   </h3>
-                  <p className="text-muted-foreground">
-                    @{stack?.creator?.username}
-                  </p>
+                  <p>@{stack?.creator?.username}</p>
                   <Badge variant="secondary" className="mt-2">
                     {stack?.creator?.expertise}
                   </Badge>
@@ -209,13 +210,13 @@ export default function StackDetails() {
           <Card className="p-6">
             <h3 className="font-semibold mb-4">Stack Information</h3>
             <div className="space-y-4 text-sm">
-              <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="flex items-center gap-2 ">
                 <Calendar className="w-4 h-4" />
                 <span>
                   Last updated {new Date(stack.updatedAt).toDateString()}
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-muted-foreground">
+              <div className="flex items-center gap-2 ">
                 <MessageSquare className="w-4 h-4" />
                 <span>Open for community feedback</span>
               </div>

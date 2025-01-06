@@ -12,7 +12,7 @@ interface StackCreatorProps {
 export function StackCreator({ stack }: StackCreatorProps) {
   const location = useLocation();
   return (
-    <Card className="overflow-hidden cursor-pointer hover:border-primary/50 transition-colors">
+    <Card className="overflow-hidden cursor-pointer hover-card">
       <div className="p-6 space-y-6">
         {/* Stack Info */}
         <div className="space-y-4">
@@ -44,8 +44,8 @@ export function StackCreator({ stack }: StackCreatorProps) {
               )}
             </div>
           </div>
-          <p className="text-muted-foreground">
-            {stack.description.split("", 40).join("")} ...
+          <p className="text-primary-foreground">
+            {stack.description.split("", 36).join("")} ...
           </p>
           <div className="flex flex-wrap gap-2 capitalize">
             <Badge variant="secondary">{stack.category}</Badge>
@@ -75,9 +75,7 @@ export function StackCreator({ stack }: StackCreatorProps) {
                   <h4 className="text-sm font-semibold">
                     {stack.creator.name}
                   </h4>
-                  <p className="text-sm text-muted-foreground">
-                    @{stack.creator.username}
-                  </p>
+                  <p className="text-sm">@{stack.creator.username}</p>
                 </div>
                 {/* <Button variant="secondary" size="sm">
                     Follow
@@ -88,7 +86,7 @@ export function StackCreator({ stack }: StackCreatorProps) {
               </Badge>
             </div>
           </div>
-          <div className="flex items-center gap-2 mt-4 text-sm text-muted-foreground">
+          <div className="flex items-center gap-2 mt-4 text-sm text-primary-foreground">
             <MessageSquareMore className="w-4 h-4" />
             <span>{stack.reviews.length} reviews</span>
           </div>
