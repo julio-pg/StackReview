@@ -9,6 +9,7 @@ body {
   @media (prefers-color-scheme: dark) {
     color-scheme: dark;
   }
+  font-family: "Libre Baskerville", serif;
 }
 
 @layer base {
@@ -42,12 +43,13 @@ body {
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 3.9%;
+    --card: 0 100% 32%;
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 3.9%;
     --popover-foreground: 0 0% 98%;
-    --primary: 0 0% 98%;
-    --primary-foreground: 0 0% 9%;
+    --vintage-gold: #fda841;
+    --primary: 356 73% 29%;
+    --primary-foreground: 0 0% 98%;
     --secondary: 0 0% 14.9%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14.9%;
@@ -66,12 +68,99 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
+h2 {
+  color: var(--vintage-gold);
+}
 
+.hover-card {
+  transition: transform 0.3s ease;
+}
+
+.hover-card:hover {
+  transform: translateY(-5px);
+}
 @layer base {
   * {
     @apply border-border;
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+/* Background Shapes */
+.shape {
+  position: absolute;
+  opacity: 0.2;
+  animation: float 6s ease-in-out infinite;
+}
+
+.fire-shape {
+  clip-path: polygon(
+    50% 99%,
+    54% 99%,
+    60% 97%,
+    66% 96%,
+    70% 92%,
+    75% 89%,
+    78% 87%,
+    84% 82%,
+    87% 79%,
+    92% 73%,
+    94% 69%,
+    96% 65%,
+    98% 60%,
+    98% 55%,
+    98% 49%,
+    98% 44%,
+    82% 0%,
+    72% 35%,
+    69% 36%,
+    65% 34%,
+    63% 30%,
+    56% 1%,
+    34% 33%,
+    31% 33%,
+    26% 33%,
+    21% 29%,
+    20% 25%,
+    12% 1%,
+    0% 35%,
+    0% 39%,
+    0% 43%,
+    0% 48%,
+    0% 53%,
+    1% 60%,
+    1% 59%,
+    2% 66%,
+    2% 69%,
+    3% 76%,
+    7% 80%,
+    9% 83%,
+    13% 86%,
+    17% 88%,
+    21% 92%,
+    23% 93%,
+    26% 95%,
+    33% 97%,
+    37% 98%,
+    43% 99%,
+    47% 99%
+  );
+  background: linear-gradient(135deg, #c41e3a, #6e1b1b);
+}
+
+.geometric-shape {
+  clip-path: circle(50% at 50% 50%);
+  background: linear-gradient(45deg, #e91e63, #ffa726);
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-30px) rotate(5deg);
   }
 }

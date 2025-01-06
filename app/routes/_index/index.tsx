@@ -49,15 +49,45 @@ export default function App() {
     <div className="min-h-screen bg-background text-foreground flex flex-col">
       <main className="flex-1">
         {/* Hero Section */}
-        <section className="relative overflow-hidden py-24">
+        <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+          {/* Background Shapes */}
+          <div className="absolute inset-0 z-0">
+            {/* Fire Shapes */}
+            <div
+              className="shape fire-shape w-32 h-32 top-1/4 left-1/4"
+              style={{ animationDelay: "0s" }}
+            />
+            <div
+              className="shape fire-shape w-48 h-48 bottom-1/4 right-1/4"
+              style={{ animationDelay: "1s" }}
+            />
+            <div
+              className="shape fire-shape w-24 h-24 top-1/3 right-1/3"
+              style={{ animationDelay: "2s" }}
+            />
+
+            {/* Geometric Shapes */}
+            <div
+              className="shape geometric-shape w-40 h-40 top-1/2 left-1/3"
+              style={{ animationDelay: "1.5s" }}
+            />
+            <div
+              className="shape geometric-shape w-36 h-36 bottom-1/3 right-1/2"
+              style={{ animationDelay: "0.5s" }}
+            />
+            <div
+              className="shape geometric-shape w-28 h-28 top-1/4 right-1/4"
+              style={{ animationDelay: "2.5s" }}
+            />
+          </div>
           <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px]" />
           <div className="container mx-auto px-4 relative">
             <div className="text-center max-w-3xl mx-auto space-y-8">
               <div className="space-y-4">
-                <h1 className="text-6xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-500">
+                <h1 className="sm:text-7xl text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-card to-white">
                   Build Your Perfect Stack
                 </h1>
-                <p className="text-xl text-muted-foreground">
+                <p className="text-2xl text-vintage-gold">
                   Discover, review, and create the ideal tech stack for your
                   next project. Join thousands of developers making informed
                   technology choices.
@@ -83,11 +113,15 @@ export default function App() {
                 Trusted and reviewed by thousands of developers
               </p>
             </div>
-            <div className="grid md:grid-cols-3 gap-8">
-              {popularStacks.map((stack) => (
-                <StackCreator key={stack.id} stack={stack} />
-              ))}
-            </div>
+            {popularStacks.length === 0 ? (
+              <div className="text-2xl">No data available at the moment.</div>
+            ) : (
+              <div className="grid md:grid-cols-3 gap-8">
+                {popularStacks?.map((stack) => (
+                  <StackCreator key={stack.id} stack={stack} />
+                ))}
+              </div>
+            )}
           </div>
         </section>
 

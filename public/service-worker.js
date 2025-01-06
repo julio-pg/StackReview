@@ -3,6 +3,9 @@ const urlsToCache = [
   '/',
   '/build/*',
   // Add other assets you want to cache
+  '/styles.css',
+  '/icons/stackReviewLogo192px.png',
+  '/icons/stackReviewLogo512px.png',
 ];
 
 self.addEventListener('install', (event) => {

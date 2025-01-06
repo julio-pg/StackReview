@@ -105,7 +105,7 @@ export default function UserStacks() {
 
   return (
     <div className=" bg-background px-4 py-8 mx-auto">
-      <h1 className="text-4xl font-bold mb-2">Profile</h1>
+      <h2 className="text-4xl font-bold mb-2">Profile</h2>
       <div className="flex items-center gap-4 mb-8">
         <div className="flex flex-col">
           <Avatar className="w-32 h-32">
@@ -145,7 +145,7 @@ export default function UserStacks() {
       </div>
       <div className="flex justify-between items-center mb-8">
         <div>
-          <h1 className="text-4xl font-bold">Your Stacks</h1>
+          <h2 className="text-4xl font-bold">Your Stacks</h2>
           <p className="text-muted-foreground mt-2">
             Manage and create your technology stacks
           </p>

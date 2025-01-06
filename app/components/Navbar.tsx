@@ -17,7 +17,7 @@ export default function Navbar() {
               alt="logo"
               className="w-10 h-10"
             />
-            <span className="font-bold">StackReview</span>
+            <h2 className="font-bold">StackReview</h2>
           </Link>
           <nav className="hidden gap-6 md:flex">
             {/* <a
@@ -27,7 +27,7 @@ export default function Navbar() {
               Features
             </a> */}
             <Link
-              className="flex items-center text-lg font-medium text-muted-foreground transition-colors hover:text-primary"
+              className="flex items-center text-lg font-medium transition-colors hover:text-primary"
               to="/stacks"
             >
               Stacks
