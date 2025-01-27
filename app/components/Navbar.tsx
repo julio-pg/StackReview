@@ -3,6 +3,7 @@ import GoogleSignupButton from "./GoogleSignupButton";
 import { useUserStore } from "~/store/userStore/userStore";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { UserNav } from "./UserNav";
+import { ThemeToggle } from "./ThemeToggle";
 
 // TODO: add categories dropdown
 export default function Navbar() {
@@ -50,9 +51,10 @@ export default function Navbar() {
               username={user.username}
             />
           ) : (
-            <div className="flex gap-3 ">
+            <div className="flex gap-3">
               <GoogleLoginButton />
               <GoogleSignupButton />
+              <ThemeToggle />
             </div>
           )}
         </div>

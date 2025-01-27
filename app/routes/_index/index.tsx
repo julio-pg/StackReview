@@ -51,8 +51,8 @@ export default function App() {
         {/* Hero Section */}
         <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
           {/* Background Shapes */}
-          <div className="absolute inset-0 z-0">
-            {/* Fire Shapes */}
+          {/* <div className="absolute inset-0 z-0">
+        
             <div
               className="shape fire-shape w-32 h-32 top-1/4 left-1/4"
               style={{ animationDelay: "0s" }}
@@ -66,7 +66,6 @@ export default function App() {
               style={{ animationDelay: "2s" }}
             />
 
-            {/* Geometric Shapes */}
             <div
               className="shape geometric-shape w-40 h-40 top-1/2 left-1/3"
               style={{ animationDelay: "1.5s" }}
@@ -79,12 +78,12 @@ export default function App() {
               className="shape geometric-shape w-28 h-28 top-1/4 right-1/4"
               style={{ animationDelay: "2.5s" }}
             />
-          </div>
+          </div> */}
           <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px]" />
           <div className="container mx-auto px-4 relative">
             <div className="text-center max-w-3xl mx-auto space-y-8">
               <div className="space-y-4">
-                <h1 className="sm:text-7xl text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-card to-white">
+                <h1 className="sm:text-7xl text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-card dark:to-white to-red-600">
                   Build Your Perfect Stack
                 </h1>
                 <p className="text-2xl text-vintage-gold">
