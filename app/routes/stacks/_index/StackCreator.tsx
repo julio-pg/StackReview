@@ -44,7 +44,7 @@ export function StackCreator({ stack }: StackCreatorProps) {
               )}
             </div>
           </div>
-          <p className="text-primary-foreground">
+          <p className="text-secondary-foreground">
             {stack.description.split("", 36).join("")} ...
           </p>
           <div className="flex flex-wrap gap-2 capitalize">

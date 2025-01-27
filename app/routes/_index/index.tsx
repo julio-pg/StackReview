@@ -83,7 +83,7 @@ export default function App() {
           <div className="container mx-auto px-4 relative">
             <div className="text-center max-w-3xl mx-auto space-y-8">
               <div className="space-y-4">
-                <h1 className="sm:text-7xl text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-card dark:to-white to-red-600">
+                <h1 className="sm:text-7xl text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-red-600 dark:to-white to-black ">
                   Build Your Perfect Stack
                 </h1>
                 <p className="text-2xl text-vintage-gold">
@@ -104,7 +104,7 @@ export default function App() {
         </section>
 
         {/* Popular Stacks Section */}
-        <section className="py-24 bg-muted/50">
+        <section className="py-24 border-t border-border">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold mb-4">Most Popular Stacks</h2>
@@ -125,8 +125,8 @@ export default function App() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-24 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-background to-muted/50" />
+        <section className="py-24 relative overflow-hidden border-t border-border">
+          <div className="absolute inset-0" />
           <div className="container mx-auto px-4 relative">
             <div className="text-center max-w-2xl mx-auto space-y-8">
               <h2 className="text-5xl font-bold">Create Your Stack</h2>

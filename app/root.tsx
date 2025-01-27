@@ -67,8 +67,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <body>
         <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
           <Navbar />
-          {children}
-          <Footer />
+          <div className="w-full mx-auto max-w-7xl lg:px-32 md:px-12 px-8 py-5">
+            {children}
+            <Footer />
+          </div>
           <ScrollRestoration />
           <Scripts />
           <Toaster />
