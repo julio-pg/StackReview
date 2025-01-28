@@ -20,7 +20,7 @@ import {
   useSearchParams,
 } from "@remix-run/react";
 import { StackCreator } from "~/routes/stacks/_index/StackCreator";
-import { requireUserSession } from "~/services/session.server";
+import { authenticate } from "~/services/session.server";
 
 import {
   Pagination,
@@ -38,12 +38,11 @@ import UpdateCreatorModal from "./UpdateCreatorModal";
 import { CreatorErrors } from "../types";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  await requireUserSession(request);
+  const creator = await authenticate(request);
   const url = new URL(request.url);
-  const userId = url.searchParams.get("userId");
   const page = url.searchParams.get("page");
 
-  const userStacks = await getUserStacks(userId!, Number(page || 1), 9);
+  const userStacks = await getUserStacks(creator.id, Number(page || 1), 9);
   const techs = await getAllTechnologies();
   return { userStacks, techs };
 }

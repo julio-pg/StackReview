@@ -15,12 +15,12 @@ import {
   getAllTechnologies,
   handleCreateStack,
 } from "~/services/Stacks/Stacks";
-import { requireUserSession } from "~/services/session.server";
 import { useUserStore } from "~/store/userStore/userStore";
 import TechDescription from "./TechDescription";
+import { authenticate } from "~/services/session.server";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  await requireUserSession(request);
+  await authenticate(request);
 
   const techs = await getAllTechnologies();
   return { techs };
@@ -28,14 +28,13 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
-  const creatorId = formData.get("creatorId") as string;
 
   const stackErrors = await handleCreateStack(formData);
   if (stackErrors) {
     return stackErrors;
   }
 
-  return redirect(`/dashboard?userId=${creatorId}`);
+  return redirect(`/dashboard`);
 };
 
 export default function CreatePage() {

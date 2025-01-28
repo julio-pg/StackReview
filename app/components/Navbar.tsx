@@ -5,6 +5,7 @@ import { UserNav } from "./UserNav";
 import { ThemeToggle } from "./ThemeToggle";
 
 // TODO: add categories dropdown
+
 export default function Navbar() {
   const { user } = useUserStore();
   return (
@@ -52,7 +53,6 @@ export default function Navbar() {
             {user ? (
               <UserNav
                 avatar={user?.avatar}
-                id={user.id}
                 name={user.name}
                 username={user.username}
               />

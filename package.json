@@ -11,7 +11,6 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@curvenote/remix-auth-google": "^3.0.0",
     "@netlify/remix-adapter": "^2.5.1",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",
@@ -34,6 +33,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "remix-auth": "^4.1.0",
+    "remix-auth-oauth2": "^3.2.2",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8",

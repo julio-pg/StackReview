@@ -5,8 +5,9 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 
 import "./tailwind.css";
 import Navbar from "./components/Navbar";
@@ -14,7 +15,14 @@ import Footer from "./components/Footer";
 import { Button } from "./components/ui/button";
 import { Toaster } from "./components/ui/toaster";
 import { useEffect } from "react";
+import { getSession } from "./services/session.server";
+import { useUserStore } from "./store/userStore/userStore";
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await getSession(request.headers.get("cookie"));
+  const user = session.get("creator");
+  return user || null;
+}
 export const links: LinksFunction = () => [
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
@@ -96,7 +104,10 @@ function registerServiceWorker() {
   }
 }
 export default function App() {
+  const user = useLoaderData<typeof loader>();
+  const { setUser } = useUserStore();
   useEffect(() => {
+    setUser(user);
     registerServiceWorker();
   }, []);
   return <Outlet />;
