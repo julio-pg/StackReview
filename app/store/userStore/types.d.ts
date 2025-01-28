@@ -15,7 +15,7 @@ export interface Creator {
 
   twitter: string;
 
-  googleUser: GoogleUser;
+  // googleUser: GoogleUser;
 }
 export interface GoogleUser {
   iss: string;

@@ -1,5 +1,4 @@
 import { Link } from "@remix-run/react";
-import GoogleSignupButton from "./GoogleSignupButton";
 import { useUserStore } from "~/store/userStore/userStore";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { UserNav } from "./UserNav";
@@ -60,7 +59,6 @@ export default function Navbar() {
             ) : (
               <div className="flex gap-3">
                 <GoogleLoginButton />
-                <GoogleSignupButton />
               </div>
             )}
           </div>

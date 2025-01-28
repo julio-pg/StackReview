@@ -15,7 +15,7 @@ import {
   getAllTechnologies,
   handleCreateStack,
 } from "~/services/Stacks/Stacks";
-import { requireUserSession } from "~/sessions";
+import { requireUserSession } from "~/services/session.server";
 import { useUserStore } from "~/store/userStore/userStore";
 import TechDescription from "./TechDescription";
 

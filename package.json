@@ -11,6 +11,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
+    "@curvenote/remix-auth-google": "^3.0.0",
     "@netlify/remix-adapter": "^2.5.1",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",
@@ -20,7 +21,6 @@
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-toast": "^1.2.2",
-    "@react-oauth/google": "^0.12.1",
     "@remix-run/dev": "^2.14.0",
     "@remix-run/node": "^2.14.0",
     "@remix-run/react": "^2.14.0",
@@ -33,6 +33,7 @@
     "lucide-react": "^0.460.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "remix-auth": "^4.1.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.23.8",

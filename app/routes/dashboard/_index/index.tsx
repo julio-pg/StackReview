@@ -20,7 +20,7 @@ import {
   useSearchParams,
 } from "@remix-run/react";
 import { StackCreator } from "~/routes/stacks/_index/StackCreator";
-import { requireUserSession } from "~/sessions";
+import { requireUserSession } from "~/services/session.server";
 
 import {
   Pagination,

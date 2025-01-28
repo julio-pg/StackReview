@@ -12,7 +12,6 @@ import "./tailwind.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Button } from "./components/ui/button";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Toaster } from "./components/ui/toaster";
 import { useEffect } from "react";
 
@@ -55,6 +54,7 @@ export function ErrorBoundary() {
     );
   }
 }
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -65,16 +65,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-          <Navbar />
-          <div className="w-full mx-auto max-w-7xl lg:px-32 md:px-12 px-8 py-5">
-            {children}
-            <Footer />
-          </div>
-          <ScrollRestoration />
-          <Scripts />
-          <Toaster />
-        </GoogleOAuthProvider>
+        <Navbar />
+        <div className="w-full mx-auto max-w-7xl lg:px-32 md:px-12 px-8 py-5">
+          {children}
+          <Footer />
+        </div>
+        <ScrollRestoration />
+        <Scripts />
+        <Toaster />
       </body>
     </html>
   );
