@@ -2,7 +2,6 @@ import type { MetaFunction } from "@remix-run/node";
 import { Button } from "~/components/ui/button";
 import { Code2, Zap } from "lucide-react";
 import { Link, useLoaderData } from "@remix-run/react";
-import { useUserStore } from "~/store/userStore/userStore";
 import { getTopRatedStacks } from "~/services/Stacks/Stacks";
 import { StackCreator } from "../stacks/_index/StackCreator";
 
@@ -43,7 +42,6 @@ export async function loader() {
 }
 
 export default function App() {
-  const { user } = useUserStore();
   const { popularStacks } = useLoaderData<typeof loader>();
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
@@ -113,7 +111,9 @@ export default function App() {
               </p>
             </div>
             {popularStacks.length === 0 ? (
-              <div className="text-2xl">No data available at the moment.</div>
+              <div className="text-2xl text-center">
+                No data available at the moment.
+              </div>
             ) : (
               <div className="grid md:grid-cols-3 gap-8">
                 {popularStacks?.map((stack) => (
@@ -138,7 +138,6 @@ export default function App() {
                 <Link
                   to={{
                     pathname: "/dashboard",
-                    search: `?userId=${user?.id}&create_stack=true`,
                   }}
                   replace={true}
                 >

@@ -50,21 +50,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {
     const formData = await request.formData();
-    const creatorId = formData.get("creatorId") as string;
 
     const { errors, newCreator } = await handleUpdateCreator(formData);
     console.log(newCreator);
     if (errors) {
       return { errors };
     }
-    return redirect(
-      `/dashboard?userId=${creatorId}&newCreator=${JSON.stringify(newCreator)}`
-    );
+    return redirect(`/dashboard?newCreator=${JSON.stringify(newCreator)}`);
   } catch (error) {
-    const formData = await request.formData();
-    const creatorId = formData.get("creatorId") as string;
     console.error("Failed to create stack:", error);
-    return redirect(`/dashboard?userId=${creatorId}`, {
+    return redirect(`/dashboard`, {
       headers: {
         "Set-Cookie": "error=true; HttpOnly; Path=/; SameSite=Strict",
       },
@@ -104,7 +99,6 @@ export default function UserStacks() {
 
   return (
     <div className=" bg-background px-4 py-8 mx-auto">
-      <h2 className="text-4xl font-bold mb-2">Profile</h2>
       <div className="flex items-center gap-4 mb-8">
         <div className="flex flex-col">
           <Avatar className="w-32 h-32">
@@ -152,7 +146,6 @@ export default function UserStacks() {
         <Link
           to={{
             pathname: "/create",
-            search: `?userId=${user?.id}`,
           }}
           replace={true}
         >

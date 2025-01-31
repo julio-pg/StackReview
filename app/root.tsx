@@ -24,6 +24,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return user || null;
 }
 export const links: LinksFunction = () => [
+  { rel: "manifest", href: "/manifest.json" },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
@@ -35,7 +36,6 @@ export const links: LinksFunction = () => [
     href: "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap",
   },
   { rel: "icon", href: "/stackReviewLogo-mini.png" },
-  { rel: "manifest", href: "/manifest.json" },
 ];
 
 export function ErrorBoundary() {

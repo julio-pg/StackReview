@@ -41,7 +41,6 @@ export async function handleCreateStack(formData: FormData) {
 
   const validationResult = stackSchema.safeParse(updates);
   if (!validationResult.success) {
-    console.error("Validation failed:");
     return validationResult.error.formErrors.fieldErrors;
   }
   await createStack(updates);

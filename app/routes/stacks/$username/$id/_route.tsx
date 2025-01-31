@@ -2,7 +2,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import { Card } from "~/components/ui/card";
-import { Separator } from "~/components/ui/separator";
 import {
   Calendar,
   ExternalLink,
@@ -171,13 +170,10 @@ export default function StackDetails() {
               </div> */}
 
               <div className="flex gap-3">
-                <Button className="w-full">Follow</Button>
-                <Button variant="outline" className="w-full">
-                  Message
+                <Button className="w-full" variant="outline">
+                  Follow
                 </Button>
               </div>
-
-              <Separator />
 
               {/* <div className="flex gap-2">
                 {stack?.creator?.github && (

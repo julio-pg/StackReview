@@ -69,7 +69,7 @@ export default function TechDescription({ tech, setSelectedTechs }: Props) {
           onChange={(e) => setNewDesc(e.target.value)}
         />
       ) : (
-        <p className="text-muted-foreground">{tech.description}</p>
+        <p>{tech.description}</p>
       )}
 
       <div className="flex justify-end gap-2">
