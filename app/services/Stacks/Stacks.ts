@@ -146,10 +146,10 @@ export async function getStackById(id: string): Promise<Stack> {
     throw error;
   }
 }
-export async function getSingleUser(id: string) {
+export async function getSingleUser(userName: string) {
   try {
     const response = await AxiosInstance.get<Creator>(
-      `/stacks/single-user/${id}`
+      `/stacks/single-user/${userName}`
     );
     return response.data;
   } catch (error) {
@@ -159,7 +159,7 @@ export async function getSingleUser(id: string) {
 }
 
 export async function getUserStacks(
-  userId: string,
+  userName: string,
   page: number,
   limit: number
 ) {
@@ -167,7 +167,7 @@ export async function getUserStacks(
     const response = await AxiosInstance.get<StackResponse>(
       "/stacks/user-stacks",
       {
-        params: { userId, page, limit },
+        params: { userName, page, limit },
       }
     );
     return response.data;

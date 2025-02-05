@@ -42,7 +42,11 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const page = url.searchParams.get("page");
 
-  const userStacks = await getUserStacks(creator.id, Number(page || 1), 9);
+  const userStacks = await getUserStacks(
+    creator.username,
+    Number(page || 1),
+    9
+  );
   const techs = await getAllTechnologies();
   return { userStacks, techs };
 }

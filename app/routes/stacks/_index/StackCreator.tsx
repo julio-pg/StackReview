@@ -58,7 +58,6 @@ export function StackCreator({ stack }: StackCreatorProps) {
             <Link
               to={{
                 pathname: `/profile/${stack.creator.username}`,
-                search: `?userId=${stack.creator?.id}`,
               }}
             >
               <Avatar className="w-12 h-12">

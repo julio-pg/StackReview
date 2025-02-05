@@ -136,7 +136,6 @@ export default function StackDetails() {
                 <Link
                   to={{
                     pathname: `/profile/${stack.creator.username}`,
-                    search: `?userId=${stack.creator?.id}`,
                   }}
                 >
                   <Avatar className="w-16 h-16">
