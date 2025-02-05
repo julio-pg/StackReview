@@ -112,7 +112,7 @@ export default function UserStacks() {
           <Link
             to={{
               pathname: "/dashboard",
-              search: `?userId=${user?.id}&edit_creator=true`,
+              search: `?edit_creator=true`,
             }}
             replace={true}
           >
@@ -172,7 +172,7 @@ export default function UserStacks() {
                 <PaginationPrevious
                   to={{
                     pathname: "/dashboard",
-                    search: `?userId=${user?.id}&page=${prevPage}`,
+                    search: `?page=${prevPage}`,
                   }}
                 />
               </PaginationItem>
@@ -184,7 +184,7 @@ export default function UserStacks() {
                   <PaginationLink
                     to={{
                       pathname: "/dashboard",
-                      search: `?userId=${user?.id}&page=${index + 1}`,
+                      search: `?page=${index + 1}`,
                     }}
                     isActive={currentPage == index + 1}
                   >
@@ -202,7 +202,7 @@ export default function UserStacks() {
               <PaginationNext
                 to={{
                   pathname: "/dashboard",
-                  search: `?userId=${user?.id}&page=${nextPage}`,
+                  search: `?page=${nextPage}`,
                 }}
               />
             </PaginationItem>
