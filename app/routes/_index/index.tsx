@@ -2,7 +2,6 @@ import type { MetaFunction } from "@remix-run/node";
 import { Button } from "~/components/ui/button";
 import { Code2, Zap } from "lucide-react";
 import { Link, useLoaderData } from "@remix-run/react";
-import { useUserStore } from "~/store/userStore/userStore";
 import { getTopRatedStacks } from "~/services/Stacks/Stacks";
 import { StackCreator } from "../stacks/_index/StackCreator";
 
@@ -43,7 +42,6 @@ export async function loader() {
 }
 
 export default function App() {
-  const { user } = useUserStore();
   const { popularStacks } = useLoaderData<typeof loader>();
   return (
     <div className="min-h-screen bg-background text-foreground flex flex-col">
@@ -51,8 +49,8 @@ export default function App() {
         {/* Hero Section */}
         <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
           {/* Background Shapes */}
-          <div className="absolute inset-0 z-0">
-            {/* Fire Shapes */}
+          {/* <div className="absolute inset-0 z-0">
+        
             <div
               className="shape fire-shape w-32 h-32 top-1/4 left-1/4"
               style={{ animationDelay: "0s" }}
@@ -66,7 +64,6 @@ export default function App() {
               style={{ animationDelay: "2s" }}
             />
 
-            {/* Geometric Shapes */}
             <div
               className="shape geometric-shape w-40 h-40 top-1/2 left-1/3"
               style={{ animationDelay: "1.5s" }}
@@ -79,12 +76,12 @@ export default function App() {
               className="shape geometric-shape w-28 h-28 top-1/4 right-1/4"
               style={{ animationDelay: "2.5s" }}
             />
-          </div>
+          </div> */}
           <div className="absolute inset-0 bg-grid-white/[0.02] bg-[size:60px_60px]" />
           <div className="container mx-auto px-4 relative">
             <div className="text-center max-w-3xl mx-auto space-y-8">
               <div className="space-y-4">
-                <h1 className="sm:text-7xl text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-card to-white">
+                <h1 className="sm:text-7xl text-4xl font-bold tracking-tighter bg-clip-text text-transparent bg-gradient-to-r from-red-600 dark:to-white to-black ">
                   Build Your Perfect Stack
                 </h1>
                 <p className="text-2xl text-vintage-gold">
@@ -105,7 +102,7 @@ export default function App() {
         </section>
 
         {/* Popular Stacks Section */}
-        <section className="py-24 bg-muted/50">
+        <section className="py-24 border-t border-border">
           <div className="container mx-auto px-4">
             <div className="text-center mb-16">
               <h2 className="text-4xl font-bold mb-4">Most Popular Stacks</h2>
@@ -114,7 +111,9 @@ export default function App() {
               </p>
             </div>
             {popularStacks.length === 0 ? (
-              <div className="text-2xl">No data available at the moment.</div>
+              <div className="text-2xl text-center">
+                No data available at the moment.
+              </div>
             ) : (
               <div className="grid md:grid-cols-3 gap-8">
                 {popularStacks?.map((stack) => (
@@ -126,8 +125,8 @@ export default function App() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-24 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-background to-muted/50" />
+        <section className="py-24 relative overflow-hidden border-t border-border">
+          <div className="absolute inset-0" />
           <div className="container mx-auto px-4 relative">
             <div className="text-center max-w-2xl mx-auto space-y-8">
               <h2 className="text-5xl font-bold">Create Your Stack</h2>
@@ -139,7 +138,6 @@ export default function App() {
                 <Link
                   to={{
                     pathname: "/dashboard",
-                    search: `?userId=${user?.id}&create_stack=true`,
                   }}
                   replace={true}
                 >

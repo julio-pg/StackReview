@@ -24,7 +24,7 @@ export default function UpdateCreatorModal({ errors }: Props) {
 
   const navigate = useNavigate();
   const handleClose = () => {
-    navigate(`/dashboard?userId=${user?.id}`);
+    navigate(`/dashboard`);
   };
   return (
     <Dialog

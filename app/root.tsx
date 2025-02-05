@@ -5,18 +5,26 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData,
 } from "@remix-run/react";
-import type { LinksFunction } from "@remix-run/node";
+import type { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
 
 import "./tailwind.css";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { Button } from "./components/ui/button";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Toaster } from "./components/ui/toaster";
 import { useEffect } from "react";
+import { getSession } from "./services/session.server";
+import { useUserStore } from "./store/userStore/userStore";
 
+export async function loader({ request }: LoaderFunctionArgs) {
+  const session = await getSession(request.headers.get("cookie"));
+  const user = session.get("creator");
+  return user || null;
+}
 export const links: LinksFunction = () => [
+  { rel: "manifest", href: "/manifest.json" },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
@@ -28,7 +36,6 @@ export const links: LinksFunction = () => [
     href: "https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap",
   },
   { rel: "icon", href: "/stackReviewLogo-mini.png" },
-  { rel: "manifest", href: "/manifest.json" },
 ];
 
 export function ErrorBoundary() {
@@ -55,6 +62,7 @@ export function ErrorBoundary() {
     );
   }
 }
+
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
@@ -64,15 +72,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Meta />
         <Links />
       </head>
-      <body className="dark">
-        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-          <Navbar />
+      <body>
+        <Navbar />
+        <div className="w-full mx-auto max-w-7xl lg:px-32 md:px-12 px-8 py-5">
           {children}
           <Footer />
-          <ScrollRestoration />
-          <Scripts />
-          <Toaster />
-        </GoogleOAuthProvider>
+        </div>
+        <ScrollRestoration />
+        <Scripts />
+        <Toaster />
       </body>
     </html>
   );
@@ -96,7 +104,10 @@ function registerServiceWorker() {
   }
 }
 export default function App() {
+  const user = useLoaderData<typeof loader>();
+  const { setUser } = useUserStore();
   useEffect(() => {
+    setUser(user);
     registerServiceWorker();
   }, []);
   return <Outlet />;

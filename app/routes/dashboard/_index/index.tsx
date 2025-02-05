@@ -20,7 +20,7 @@ import {
   useSearchParams,
 } from "@remix-run/react";
 import { StackCreator } from "~/routes/stacks/_index/StackCreator";
-import { requireUserSession } from "~/sessions";
+import { authenticate } from "~/services/session.server";
 
 import {
   Pagination,
@@ -38,12 +38,15 @@ import UpdateCreatorModal from "./UpdateCreatorModal";
 import { CreatorErrors } from "../types";
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  await requireUserSession(request);
+  const creator = await authenticate(request);
   const url = new URL(request.url);
-  const userId = url.searchParams.get("userId");
   const page = url.searchParams.get("page");
 
-  const userStacks = await getUserStacks(userId!, Number(page || 1), 9);
+  const userStacks = await getUserStacks(
+    creator.username,
+    Number(page || 1),
+    9
+  );
   const techs = await getAllTechnologies();
   return { userStacks, techs };
 }
@@ -51,21 +54,16 @@ export async function loader({ request }: LoaderFunctionArgs) {
 export const action = async ({ request }: ActionFunctionArgs) => {
   try {
     const formData = await request.formData();
-    const creatorId = formData.get("creatorId") as string;
 
     const { errors, newCreator } = await handleUpdateCreator(formData);
     console.log(newCreator);
     if (errors) {
       return { errors };
     }
-    return redirect(
-      `/dashboard?userId=${creatorId}&newCreator=${JSON.stringify(newCreator)}`
-    );
+    return redirect(`/dashboard?newCreator=${JSON.stringify(newCreator)}`);
   } catch (error) {
-    const formData = await request.formData();
-    const creatorId = formData.get("creatorId") as string;
     console.error("Failed to create stack:", error);
-    return redirect(`/dashboard?userId=${creatorId}`, {
+    return redirect(`/dashboard`, {
       headers: {
         "Set-Cookie": "error=true; HttpOnly; Path=/; SameSite=Strict",
       },
@@ -105,7 +103,6 @@ export default function UserStacks() {
 
   return (
     <div className=" bg-background px-4 py-8 mx-auto">
-      <h2 className="text-4xl font-bold mb-2">Profile</h2>
       <div className="flex items-center gap-4 mb-8">
         <div className="flex flex-col">
           <Avatar className="w-32 h-32">
@@ -115,7 +112,7 @@ export default function UserStacks() {
           <Link
             to={{
               pathname: "/dashboard",
-              search: `?userId=${user?.id}&edit_creator=true`,
+              search: `?edit_creator=true`,
             }}
             replace={true}
           >
@@ -153,7 +150,6 @@ export default function UserStacks() {
         <Link
           to={{
             pathname: "/create",
-            search: `?userId=${user?.id}`,
           }}
           replace={true}
         >
@@ -176,7 +172,7 @@ export default function UserStacks() {
                 <PaginationPrevious
                   to={{
                     pathname: "/dashboard",
-                    search: `?userId=${user?.id}&page=${prevPage}`,
+                    search: `?page=${prevPage}`,
                   }}
                 />
               </PaginationItem>
@@ -188,7 +184,7 @@ export default function UserStacks() {
                   <PaginationLink
                     to={{
                       pathname: "/dashboard",
-                      search: `?userId=${user?.id}&page=${index + 1}`,
+                      search: `?page=${index + 1}`,
                     }}
                     isActive={currentPage == index + 1}
                   >
@@ -206,7 +202,7 @@ export default function UserStacks() {
               <PaginationNext
                 to={{
                   pathname: "/dashboard",
-                  search: `?userId=${user?.id}&page=${nextPage}`,
+                  search: `?page=${nextPage}`,
                 }}
               />
             </PaginationItem>

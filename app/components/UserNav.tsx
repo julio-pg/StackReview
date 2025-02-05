@@ -8,30 +8,15 @@ import {
   DropdownMenuTrigger,
 } from "~/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "~/components/ui/avatar";
-import { User, LogOut } from "lucide-react";
+import { User } from "lucide-react";
 import { Link } from "@remix-run/react";
-import { useUserStore } from "~/store/userStore/userStore";
-import { googleLogout } from "@react-oauth/google";
-
+import LogoutButton from "./LogoutButton";
 type Props = {
   avatar: string;
   name: string;
   username: string;
-  id: string;
 };
-export function UserNav({ avatar, name, username, id }: Props) {
-  const { setUser } = useUserStore();
-
-  const logout = () => {
-    try {
-      googleLogout();
-      localStorage.removeItem("loginData");
-      setUser(null);
-      // Optionally, redirect to the login page or perform other actions after logout
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
+export function UserNav({ avatar, name, username }: Props) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -52,7 +37,6 @@ export function UserNav({ avatar, name, username, id }: Props) {
           <Link
             to={{
               pathname: "/dashboard",
-              search: `?userId=${id}`,
             }}
           >
             <DropdownMenuItem>
@@ -66,12 +50,9 @@ export function UserNav({ avatar, name, username, id }: Props) {
           </DropdownMenuItem> */}
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
-        <DropdownMenuItem
-          className="text-red-600 cursor-pointer"
-          onClick={() => logout()}
-        >
-          <LogOut className="mr-2 h-4 w-4" />
-          <span>Sign out</span>
+
+        <DropdownMenuItem className="text-red-600 cursor-pointer">
+          <LogoutButton />
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
