@@ -3,22 +3,9 @@ import { Button } from "./ui/button";
 
 import { useThemeStore } from "~/store/themeStore/themeStore";
 import { useEffect } from "react";
-import { Theme } from "~/store/themeStore/types";
 
 export function ThemeToggle() {
   const { theme, storageKey, setTheme } = useThemeStore();
-
-  useEffect(() => {
-    const initialTheme = localStorage.getItem(storageKey) as Theme | null;
-    const root = window.document.documentElement;
-    root.classList.remove("light", "dark");
-
-    if (initialTheme) {
-      setTheme(initialTheme);
-      root.classList.add(initialTheme);
-      return;
-    }
-  }, []);
 
   useEffect(() => {
     const root = window.document.documentElement;

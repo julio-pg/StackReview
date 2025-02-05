@@ -1,10 +1,12 @@
 import { create } from "zustand";
-import { ThemeState } from "./types";
+import { Theme, ThemeState } from "./types";
 
 export const useThemeStore = create<ThemeState>()((set) => ({
-  defaultTheme: "dark",
   storageKey: "ui-theme",
-  theme: "dark",
+  theme:
+    typeof window !== "undefined"
+      ? (localStorage.getItem("ui-theme") as Theme) || "dark"
+      : "dark",
   setTheme: (theme) => {
     set({ theme });
   },
