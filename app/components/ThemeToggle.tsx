@@ -5,14 +5,14 @@ import { useThemeStore } from "~/store/themeStore/themeStore";
 import { useEffect } from "react";
 
 export function ThemeToggle() {
-  const { theme, storageKey, setTheme } = useThemeStore();
+  const { theme, setTheme } = useThemeStore();
 
   useEffect(() => {
     const root = window.document.documentElement;
     root.classList.remove("light", "dark");
 
     root.classList.add(theme);
-    localStorage.setItem(storageKey, theme);
+    // localStorage.setItem(storageKey, theme);
   }, [theme]);
 
   const themeButton =

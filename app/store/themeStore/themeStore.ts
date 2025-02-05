@@ -9,5 +9,6 @@ export const useThemeStore = create<ThemeState>()((set) => ({
       : "dark",
   setTheme: (theme) => {
     set({ theme });
+    localStorage.setItem("ui-theme", theme);
   },
 }));
