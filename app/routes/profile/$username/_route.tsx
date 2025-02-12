@@ -17,7 +17,6 @@ import {
 export async function loader({ request, params }: LoaderFunctionArgs) {
   const url = new URL(request.url);
   const userName = params.username;
-  // const userId = url.searchParams.get("userId");
   const page = url.searchParams.get("page");
   const creator = await getSingleUser(userName!);
   const userStacks = await getUserStacks(userName!, Number(page || 1), 9);

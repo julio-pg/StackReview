@@ -115,7 +115,7 @@ export default function Stacks() {
             <DataNotFound title="No stacks found" />
           </div>
         )}
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 gap-8">
           {stacks?.data.map((stack, i) => (
             <StackCreator key={stack.title + i} stack={stack} />
           ))}
